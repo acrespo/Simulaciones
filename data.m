@@ -14,7 +14,24 @@ function s = value_to_project_size(u)
 end
 
 function d = date_from_params(type, hours, price)
-    d = 0;
+
+    hours_per_month = 40 * 4;
+
+    if type == 1
+        min_devs = 1;
+        mean_devs = 1.2;
+        max_devs = 2;
+    elseif type == 2
+        min_devs = 2;
+        mean_devs = 2.5;
+        max_devs = 4.5;
+    else
+        min_devs = 3;
+        mean_devs = 6;
+        max_devs = 4;
+    end
+
+    d = triangular_sample(hours / (hours_per_month * max_devs), hours / (hours_per_month * min_devs), hours / (hours_per_month * mean_devs), 1);
 end
 
 function projects = generate_projects(count, type, size_a, size_b, size_c, price_c, price_a_factor, price_b_factor)
