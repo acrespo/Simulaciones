@@ -6,7 +6,7 @@ def run():
     company = Company(10, lambda c, p: True)
 
     # A 10 year run
-    for t in range(4):
+    for t in range(12):
 
         print("Step %d:" % (t, ))
 
@@ -20,7 +20,7 @@ def run():
         for p in projects:
             company.decide_project(p)
 
-# TODO: Work work
+        company.workflow.work()
 
         print("\tEarnings: %d" % (company.earnings, ))
         print("\tOpportunity cost: %d" % (company.opportunity_cost, ))
