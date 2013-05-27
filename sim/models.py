@@ -52,13 +52,16 @@ class Workflow(object):
     def add_project(self, project):
         return Workflow(self.resources, self.projects + [project])
 
-    def is_deliverable(self):
+    def is_deliverable(self, resources = None):
+
+        if resources is None:
+            resources = self.resources
 
         unused = 0
         last_period = 0
 
         for p in self.projects:
-            hours_since_last = (p.periods_to_delivery - last_period) * 40 * 4 * self.resources
+            hours_since_last = (p.periods_to_delivery - last_period) * 40 * 4 * resources
 
             if p.hours_left > hours_since_last + unused:
                 return False
