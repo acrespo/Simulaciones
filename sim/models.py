@@ -16,14 +16,15 @@ class Company(object):
     def decide_project(self, project):
 
         new_workflow = self.workflow.add_project(project)
+        can_be_delivered = new_workflow.is_deliverable()
 
-        if new_workflow.is_deliverable() and self.strategy(self, project):
+        if can_be_delivered and self.strategy(self, project, new_workflow):
             print("Accepted project " + str(project))
             self.accepted += 1
             self.workflow = new_workflow
             self.earnings += project.cost
         else:
-            print("Declined project " + str(project))
+            print(("Declined project " if can_be_delivered else "Cant deliver ") + str(project))
             self.declined += 1
             self.opportunity_cost += project.cost
 

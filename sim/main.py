@@ -1,9 +1,10 @@
 from models import Company, Project
 import sample
+from math import floor
 
 def run():
 
-    company = Company(20, lambda c, p: True)
+    company = Company(20, lambda c, p, w: w.is_deliverable(int(floor(w.resources * 0.8))))
 
     # A 10 year run
     for t in range(120):
