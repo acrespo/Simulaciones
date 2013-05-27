@@ -3,10 +3,10 @@ import sample
 
 def run():
 
-    company = Company(10, lambda c, p: True)
+    company = Company(20, lambda c, p: True)
 
     # A 10 year run
-    for t in range(12):
+    for t in range(120):
 
         print("Step %d:" % (t, ))
 
@@ -26,6 +26,13 @@ def run():
         print("\tOpportunity cost: %d" % (company.opportunity_cost, ))
 
         print("")
+
+    print("")
+    print("Things to know:")
+    print("\taccepted: " + str(company.accepted))
+    print("\tdeclined: " + str(company.declined))
+    print("\tEarnings: %d" % (company.earnings, ))
+    print("\tOpportunity cost: %d" % (company.opportunity_cost, ))
 
 
 def generate_project():
