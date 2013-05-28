@@ -1,4 +1,4 @@
-from math import ceil
+from math import ceil, floor
 
 class Company(object):
 
@@ -63,7 +63,6 @@ class Workflow(object):
 
         for p in self.projects:
             hours_since_last = (p.periods_to_delivery - last_period) * 40 * 4 * resources
-
             if p.hours_left > hours_since_last + unused:
                 return False
 
@@ -83,7 +82,10 @@ class Workflow(object):
         assigned_hours = []
 
         for p in self.projects:
-            hours = int(ceil(float(p.hours_left) / p.periods_to_delivery))
+            if p.periods_to_delivery == 1:
+                hours = p.hours_left
+            else:
+                hours = p.hours_left / p.periods_to_delivery
             to_assign = min(hours, hours_left)
 
             hours_left -= to_assign
@@ -114,3 +116,5 @@ class Workflow(object):
             print(self.projects)
             print(assigned_hours)
             assert(False)
+
+        return self.resources * total_hours / float(hours_in_period)

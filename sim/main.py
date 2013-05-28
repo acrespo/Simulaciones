@@ -4,10 +4,16 @@ from math import floor
 
 def run():
 
-    company = Company(20, lambda c, p, w: w.is_deliverable(int(floor(w.resources * 0.8))))
+    def strategy(c, p, w):
+        return True
+    company = Company(20, strategy)
+
+    resource_usage = []
+    earnings = []
+    cost = []
 
     # A 10 year run
-    for t in range(120):
+    for t in range(12):
 
         print("Step %d:" % (t, ))
 
@@ -21,10 +27,12 @@ def run():
         for p in projects:
             company.decide_project(p)
 
-        company.workflow.work()
+        used_resources = company.workflow.work()
+        resource_usage.append(used_resources)
 
         print("\tEarnings: %d" % (company.earnings, ))
         print("\tOpportunity cost: %d" % (company.opportunity_cost, ))
+        print("\tUsed Resources: %f" % (used_resources / company.workflow.resources, ))
 
         print("")
 
@@ -34,6 +42,7 @@ def run():
     print("\tdeclined: " + str(company.declined))
     print("\tEarnings: %d" % (company.earnings, ))
     print("\tOpportunity cost: %d" % (company.opportunity_cost, ))
+    print("\tUsed Resources Average: %f" % (sum(resource_usage) / len(resource_usage), ))
 
 
 def generate_project():
