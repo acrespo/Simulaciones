@@ -123,9 +123,9 @@ class Workflow(object):
 
         i = 0
         while hours_left > 0 and i < len(self.projects):
-            p = self.projects[0]
+            p = self.projects[i]
 
-            to_assign = min(p.hours_left, hours_left)
+            to_assign = min(p.hours_left - assigned_hours[i], hours_left)
             hours_left -= to_assign
 
             assigned_hours[i] += to_assign
