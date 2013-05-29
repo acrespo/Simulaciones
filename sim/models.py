@@ -49,11 +49,13 @@ class Project(object):
         self.hours_left = self.hours
         self.periods_to_delivery = int(ceil(self.hours / (4.0 * 40 * self.ideal_devs)))
 
+        self.extra_devs = 0
+
         self.cost = self.hours * self.price_per_hour
 
     def __repr__(self):
-        return "Project(%d [h] * %d [$/h] = $ %d) = (%d [mes], %d [h], %d [devs]) " % (
-                self.hours, self.price_per_hour, self.cost, self.periods_to_delivery, self.hours_left, self.ideal_devs)
+        return "Project(%d [h] * %d [$/h] = $ %d) = (%d [mes], %d [h], %d + %d [devs]) " % (
+                self.hours, self.price_per_hour, self.cost, self.periods_to_delivery, self.hours_left, self.ideal_devs, self.extra_devs)
 
 class Workflow(object):
 
@@ -68,7 +70,6 @@ class Workflow(object):
         return Workflow(self.resources, self.reserved_resources, self.projects + [project])
 
     def is_deliverable(self):
-        # How do we get a project to engage a reserved dev?
 
         unused = 0
         last_period = 0
@@ -76,12 +77,24 @@ class Workflow(object):
         usable_resources = self.resources - self.reserved_resources
         hours_per_period = 40 * 4 * usable_resources
 
+        last_extra_period = [0] * self.reserved_resources
+
         for p in self.projects:
             hours_since_last = (p.periods_to_delivery - last_period) * hours_per_period
-            if p.hours_left > hours_since_last + unused:
+            extra_hours = 0
+
+            if p.extra_devs > 0:
+                last_extra_period.sort()
+
+                for i in range(p.extra_devs):
+                    extra_hours += (p.periods_to_delivery - last_extra_period[i]) * 40 * 4
+                    last_extra_period[i] = p.periods_to_delivery
+
+
+            if p.hours_left > hours_since_last + unused + extra_hours:
                 return False
 
-            unused += hours_since_last - p.hours_left
+            unused += hours_since_last - (p.hours_left - extra_hours)
             last_period = p.periods_to_delivery
 
         return True
@@ -106,6 +119,16 @@ class Workflow(object):
             hours_left -= to_assign
 
             assigned_hours.append(to_assign)
+
+        i = 0
+        while hours_left > 0 and i < len(self.projects):
+            p = self.projects[0]
+
+            to_assign = min(p.hours_left, hours_left)
+            hours_left -= to_assign
+
+            assigned_hours[i] += to_assign
+            i += 1
 
         total_hours = sum(assigned_hours)
         if total_hours > hours_in_period:
