@@ -28,6 +28,13 @@ class Company(object):
 
         new_workflow = self.workflow.add_project(project)
         can_be_delivered = new_workflow.is_deliverable()
+        if project.is_awesome and not can_be_delivered:
+
+            print("Activating extra workforce")
+            while not can_be_delivered and project.extra_devs < 2:
+                project.extra_devs += 1
+                can_be_delivered = new_workflow.is_deliverable()
+
 
 # TODO: Consider adding extra workforce if project.is_awesome
         if can_be_delivered:

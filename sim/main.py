@@ -1,18 +1,25 @@
+import sample
 from models import Company, Project
 from stats import Stats
-import sample
+
 from math import floor
+from operator import attrgetter
 
 def simulate_company():
 
     def strategy(projects):
-#TODO: Calculate TOP 20% projects and give them priority status
+        projects.sort(key = attrgetter('hours'), reverse = True)
+        projects.sort(key = attrgetter('price_per_hour'), reverse = True)
+
+        if projects:
+            projects[0].is_awesome = True
+
         return projects
 
     stats = Stats(12)
     company = Company(20, 4, strategy, stats)
 
-    # A 10 year simulate_company
+    # A 2 year run
     for t in range(24):
 
         print("Step %d:" % (t, ))
