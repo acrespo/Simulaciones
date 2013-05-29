@@ -25,11 +25,9 @@ def workforce_sample(min):
 def project(hours_min, hours_max, hours_mode, price_min, price_max, price_mode, delivery_min):
     hours = int(random.triangular(hours_min, hours_mode, hours_mode))
     price = int(random.triangular(price_min, price_mode, price_max))
+    ideal_devs = workforce_sample(delivery_min)
 
-
-    delivery = ceil(hours / (4 * 40.0 * workforce_sample(delivery_min)))
-
-    return (hours, price, delivery)
+    return (hours, price, ideal_devs)
 
 def small_project():
     return project(500, 2000, 1400, 260, 310, 280, 1)

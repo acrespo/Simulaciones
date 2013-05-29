@@ -40,18 +40,20 @@ class Company(object):
 
 class Project(object):
 
-    def __init__(self, hours, price_per_hour, periods_to_delivery):
+    def __init__(self, hours, price_per_hour, ideal_devs):
 
         self.hours = hours
         self.price_per_hour = price_per_hour
+        self.ideal_devs = ideal_devs
 
         self.hours_left = self.hours
-        self.periods_to_delivery = periods_to_delivery
+        self.periods_to_delivery = int(ceil(self.hours / (4.0 * 40 * self.ideal_devs)))
 
         self.cost = self.hours * self.price_per_hour
 
     def __repr__(self):
-        return "Project(%d [h] * %d [$/h] = $ %d) = (%d [mes], %d [h]) " % (self.hours, self.price_per_hour, self.cost, self.periods_to_delivery, self.hours_left)
+        return "Project(%d [h] * %d [$/h] = $ %d) = (%d [mes], %d [h], %d [devs]) " % (
+                self.hours, self.price_per_hour, self.cost, self.periods_to_delivery, self.hours_left, self.ideal_devs)
 
 class Workflow(object):
 
