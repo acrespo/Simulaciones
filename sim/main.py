@@ -1,49 +1,33 @@
 from models import Company, Project
+from stats import Stats
 import sample
 from math import floor
 
-def run():
+def simulate_company():
 
     def strategy(c, p, w):
         return True
-    company = Company(20, strategy)
 
-    resource_usage = []
-    earnings = []
-    cost = []
+    stats = Stats(12)
+    company = Company(20, 4, strategy, stats)
 
-    # A 10 year run
-    for t in range(12):
+    # A 10 year simulate_company
+    for t in range(24):
 
         print("Step %d:" % (t, ))
+        stats.start_month()
 
-        project_count = sample.project_count()
-        print("Incoming projects %d" % (project_count, ))
-
-        projects = [generate_project() for _ in range(project_count)]
-        print('\t' + '\n\t'.join([repr(p) for p in projects]))
-# TODO: Sort projects
-
-        for p in projects:
-            company.decide_project(p)
+        projects = [generate_project() for _ in range(sample.project_count())]
+        company.decide_projects(projects)
 
         used_resources = company.workflow.work()
-        resource_usage.append(used_resources)
 
-        print("\tEarnings: %d" % (company.earnings, ))
-        print("\tOpportunity cost: %d" % (company.opportunity_cost, ))
-        print("\tUsed Resources: %f" % (used_resources / company.workflow.resources, ))
+        stats.end_month(used_resources, company.workflow.average_workload())
 
-        print("")
+        print(stats.monthly_report())
 
     print("")
-    print("Things to know:")
-    print("\taccepted: " + str(company.accepted))
-    print("\tdeclined: " + str(company.declined))
-    print("\tEarnings: %d" % (company.earnings, ))
-    print("\tOpportunity cost: %d" % (company.opportunity_cost, ))
-    print("\tUsed Resources Average: %f" % (sum(resource_usage) / len(resource_usage), ))
-
+    print(stats)
 
 def generate_project():
 
@@ -58,4 +42,4 @@ def generate_project():
 
 
 if __name__ == "__main__":
-    run()
+    simulate_company()

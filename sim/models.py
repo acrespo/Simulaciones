@@ -2,9 +2,9 @@ from math import ceil, floor
 
 class Company(object):
 
-    def __init__(self, resources, strategy):
+    def __init__(self, resources, reserved_resources, strategy, stats):
 
-        self.workflow = Workflow(resources)
+        self.workflow = Workflow(resources, reserved_resources)
         self.strategy = strategy
 
         self.opportunity_cost = 0
@@ -13,20 +13,30 @@ class Company(object):
         self.accepted = 0
         self.declined = 0
 
+        self.stats = stats
+
+    def decide_projects(self, projects):
+
+        print('\t' + '\n\t'.join([repr(p) for p in projects]))
+#TODO: Calculate TOP 20% projects and give them priority status
+
+        for p in projects:
+            self.decide_project(p)
+
     def decide_project(self, project):
+        self.stats.project_arrived(project)
 
         new_workflow = self.workflow.add_project(project)
         can_be_delivered = new_workflow.is_deliverable()
 
+# TODO: Consider adding extra workforce if project has priority status
         if can_be_delivered and self.strategy(self, project, new_workflow):
             print("Accepted project " + str(project))
-            self.accepted += 1
             self.workflow = new_workflow
-            self.earnings += project.cost
+            self.stats.project_accepted(project)
         else:
             print(("Declined project " if can_be_delivered else "Cant deliver ") + str(project))
-            self.declined += 1
-            self.opportunity_cost += project.cost
+            self.stats.project_declined(project)
 
 class Project(object):
 
@@ -45,24 +55,27 @@ class Project(object):
 
 class Workflow(object):
 
-    def __init__(self, resources, projects = []):
+    def __init__(self, resources, reserved_resources, projects = []):
         self.resources = resources
+        self.reserved_resources = reserved_resources
+
         self.projects = projects[:]
         self.projects.sort(key = lambda p: p.periods_to_delivery)
 
     def add_project(self, project):
-        return Workflow(self.resources, self.projects + [project])
+        return Workflow(self.resources, self.reserved_resources, self.projects + [project])
 
-    def is_deliverable(self, resources = None):
-
-        if resources is None:
-            resources = self.resources
+    def is_deliverable(self):
+        # How do we get a project to engage a reserved dev?
 
         unused = 0
         last_period = 0
 
+        usable_resources = self.resources - self.reserved_resources
+        hours_per_period = 40 * 4 * usable_resources
+
         for p in self.projects:
-            hours_since_last = (p.periods_to_delivery - last_period) * 40 * 4 * resources
+            hours_since_last = (p.periods_to_delivery - last_period) * hours_per_period
             if p.hours_left > hours_since_last + unused:
                 return False
 
@@ -85,7 +98,7 @@ class Workflow(object):
             if p.periods_to_delivery == 1:
                 hours = p.hours_left
             else:
-                hours = p.hours_left / p.periods_to_delivery
+                hours = floor(p.hours_left / p.periods_to_delivery)
             to_assign = min(hours, hours_left)
 
             hours_left -= to_assign
@@ -118,3 +131,7 @@ class Workflow(object):
             assert(False)
 
         return self.resources * total_hours / float(hours_in_period)
+
+    def average_workload(self):
+        # TODO: Stub
+        return 0
