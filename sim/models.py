@@ -18,7 +18,7 @@ class Company(object):
     def decide_projects(self, projects):
 
         projects = self.strategy(projects)
-        print('\t' + '\n\t'.join([repr(p) for p in projects]))
+#        print('\t' + '\n\t'.join([repr(p) for p in projects]))
 
         for p in projects:
             self.decide_project(p)
@@ -30,7 +30,7 @@ class Company(object):
         can_be_delivered = new_workflow.is_deliverable()
         if project.is_awesome and not can_be_delivered:
 
-            print("Activating extra workforce")
+#            print("Activating extra workforce")
             while not can_be_delivered and project.extra_devs < 2:
                 project.extra_devs += 1
                 can_be_delivered = new_workflow.is_deliverable()
@@ -38,11 +38,11 @@ class Company(object):
 
 # TODO: Consider adding extra workforce if project.is_awesome
         if can_be_delivered:
-            print("Accepted project " + str(project))
+#            print("Accepted project " + str(project))
             self.workflow = new_workflow
             self.stats.project_accepted(project)
         else:
-            print(("Declined project " if can_be_delivered else "Cant deliver ") + str(project))
+#            print(("Declined project " if can_be_delivered else "Cant deliver ") + str(project))
             self.stats.project_declined(project)
 
 class Project(object):
@@ -109,8 +109,8 @@ class Workflow(object):
 
     def work(self):
 
-        print("Working this period")
-        print('\t' + '\n\t'.join([repr(p) for p in self.projects]))
+#        print("Working this period")
+#        print('\t' + '\n\t'.join([repr(p) for p in self.projects]))
 
         hours_in_period = self.resources * 4 * 40
 
@@ -140,9 +140,9 @@ class Workflow(object):
 
         total_hours = sum(assigned_hours)
         if total_hours > hours_in_period:
-            print("PANIC")
-            print(self.projects)
-            print(assigned_hours)
+#            print("PANIC")
+#            print(self.projects)
+#            print(assigned_hours)
             assert(False)
 
         for p, h in zip(self.projects, assigned_hours):
@@ -151,16 +151,16 @@ class Workflow(object):
 
         finished = [p for p in self.projects if p.hours_left == 0]
 
-        if finished:
-            print("Delivered this period")
-            print('\t' + '\n\t'.join([repr(p) for p in finished]))
+#        if finished:
+#            print("Delivered this period")
+#            print('\t' + '\n\t'.join([repr(p) for p in finished]))
 
         self.projects = [p for p in self.projects if p.hours_left > 0]
         if [p for p in self.projects if p.periods_to_delivery == 0]:
-            print("HOLTY SHIT WE DOOMED")
-            print(finished)
-            print(self.projects)
-            print(assigned_hours)
+#            print("HOLTY SHIT WE DOOMED")
+#            print(finished)
+#            print(self.projects)
+#            print(assigned_hours)
             assert(False)
 
         return self.resources * total_hours / float(hours_in_period)

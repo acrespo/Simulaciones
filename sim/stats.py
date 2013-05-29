@@ -1,3 +1,4 @@
+
 def after_warm_up(f):
 
     def ret(self, *args, **kwargs):
@@ -10,11 +11,34 @@ def after_warm_up(f):
 def avg(l):
     return sum(l) / len(l)
 
+class Snapshot(object):
+
+    def __init__(self, stats):
+
+        self.runs = stats.runs
+        self.warm_up = stats.warm_up
+        self.current_step = stats.current_step
+
+        self.demand_hours = stats.demand_hours[:]
+        self.demand_proyects = stats.demand_proyects[:]
+
+        self.active_workforce = stats.active_workforce[:]
+
+        self.hours_sold = stats.hours_sold[:]
+        self.hours_declined = stats.hours_declined[:]
+
+        self.profit = stats.profit[:]
+        self.opportunity_cost = stats.opportunity_cost[:]
+
+        self.average_workload = stats.average_workload[:]
+
+
 class Stats(object):
 
-    def __init__(self, warm_up):
+    def __init__(self, warm_up, runs):
 
         self.warm_up = warm_up
+        self.runs = runs
 
         self.demand_hours = []
         self.demand_proyects = []
@@ -30,6 +54,11 @@ class Stats(object):
         self.average_workload = []
 
         self.current_step = 0
+        self.observer = None
+
+    def set_observer(self, observer):
+        print('setting observer')
+        self.observer = observer
 
     def start_month(self):
         self.current_step += 1
@@ -48,6 +77,9 @@ class Stats(object):
     def end_month(self, active_workforce, average_workload):
         self.active_workforce.append(active_workforce)
         self.average_workload.append(average_workload)
+
+        if self.observer:
+            self.observer.end_month(Snapshot(self))
 
     @after_warm_up
     def project_accepted(self, project):
