@@ -17,8 +17,8 @@ class Company(object):
 
     def decide_projects(self, projects):
 
+        projects = self.strategy(projects)
         print('\t' + '\n\t'.join([repr(p) for p in projects]))
-#TODO: Calculate TOP 20% projects and give them priority status
 
         for p in projects:
             self.decide_project(p)
@@ -29,8 +29,8 @@ class Company(object):
         new_workflow = self.workflow.add_project(project)
         can_be_delivered = new_workflow.is_deliverable()
 
-# TODO: Consider adding extra workforce if project has priority status
-        if can_be_delivered and self.strategy(self, project, new_workflow):
+# TODO: Consider adding extra workforce if project.is_awesome
+        if can_be_delivered:
             print("Accepted project " + str(project))
             self.workflow = new_workflow
             self.stats.project_accepted(project)
@@ -50,6 +50,7 @@ class Project(object):
         self.periods_to_delivery = int(ceil(self.hours / (4.0 * 40 * self.ideal_devs)))
 
         self.extra_devs = 0
+        self.is_awesome = False
 
         self.cost = self.hours * self.price_per_hour
 

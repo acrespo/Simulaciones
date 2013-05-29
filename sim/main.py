@@ -5,8 +5,9 @@ from math import floor
 
 def simulate_company():
 
-    def strategy(c, p, w):
-        return True
+    def strategy(projects):
+#TODO: Calculate TOP 20% projects and give them priority status
+        return projects
 
     stats = Stats(12)
     company = Company(20, 4, strategy, stats)
