@@ -158,5 +158,9 @@ class Workflow(object):
         return self.resources * total_hours / float(hours_in_period)
 
     def average_workload(self):
-        # TODO: Stub
-        return 0
+
+        work_hours = 0
+        for p in self.projects:
+            work_hours += p.hours_left
+
+        return float(work_hours) / (self.resources - self.reserved_resources)
