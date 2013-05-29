@@ -56,7 +56,7 @@ class Project(object):
 
     def __repr__(self):
         return "Project(%d [h] * %d [$/h] = $ %d) = (%d [mes], %d [h], %d + %d [devs]) " % (
-                self.hours, self.price_per_hour, self.cost, self.periods_to_delivery, self.hours_left, self.ideal_devs, self.extra_devs)
+                self.hours, self.price_per_hour, self.cost, self.periods_to_delivery, self.hours_left, self.ideal_devs, self.extra_devs) + ("awesome! " if self.is_awesome else "")
 
 class Workflow(object):
 
