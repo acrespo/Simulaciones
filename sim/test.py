@@ -130,6 +130,51 @@ class WorkflowTest(unittest.TestCase):
         w2 = w.add_project(not_awesome)
         self.assertTrue(w2.is_deliverable())
 
+    def test_parallel_awesome(self):
+        p1 = Project(2 * 480, 1, 2)
+        p2 = Project(2 * 480, 1, 2)
+
+        awesome = Project(160, 1, 1)
+        awesome.is_awesome = True
+        awesome.extra_devs = 1
+
+        w = Workflow(6, 2, [p1, p2, awesome])
+        self.assertTrue(w.is_deliverable())
+
+        not_awesome = Project(160, 1, 1)
+        not_awesome.is_awesome = True
+        not_awesome.extra_devs = 1
+
+        w2 = w.add_project(not_awesome)
+        self.assertTrue(w2.is_deliverable())
+
+    def test_lots_of_awesome(self):
+        p1 = Project(2 * 480, 1, 2)
+        p2 = Project(2 * 480, 1, 2)
+
+        awesome = Project(160, 1, 1)
+        awesome.is_awesome = True
+        awesome.extra_devs = 1
+
+        not_awesome = Project(2 * 160, 1, 1)
+        not_awesome.is_awesome = True
+        not_awesome.extra_devs = 1
+
+        w = Workflow(7, 3, [p1, p2, awesome, not_awesome])
+        self.assertTrue(w.is_deliverable())
+
+        more_awesome = Project(6 * 160, 1, 1)
+        more_awesome.periods_to_delivery = 3
+        more_awesome.is_awesome = True
+        more_awesome.extra_devs = 2
+
+        w2 = w.add_project(more_awesome)
+        self.assertFalse(w2.is_deliverable(), msg = "Fails, it need one more dev")
+
+        more_awesome.extra_devs = 3
+        self.assertTrue(w2.is_deliverable())
+
+
     def test_work(self):
         pass
 
