@@ -167,6 +167,9 @@ class Workflow(object):
 
     def average_workload(self):
 
+        if self.resources == self.reserved_resources:
+            return 0
+
         work_hours = 0
         for p in self.projects:
             work_hours += p.hours_left
