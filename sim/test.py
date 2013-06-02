@@ -75,13 +75,63 @@ class WorkflowTest(unittest.TestCase):
         self.assertTrue(w.is_deliverable())
 
     def test_deliverable_awesome(self):
-        self.fail()
+        p1 = Project(300, 1, 3)
+        p2 = Project(300, 1, 3)
+
+        w = Workflow(6, 2, [p1, p2])
+        self.assertTrue(w.is_deliverable())
+
+        awesome = Project(300, 1, 3)
+        awesome.is_awesome = True
+
+        w2 = w.add_project(awesome)
+        self.assertFalse(w2.is_deliverable())
+
+        awesome.extra_devs = 1
+        self.assertFalse(w2.is_deliverable())
+
+        awesome.extra_devs = 2
+        self.assertTrue(w2.is_deliverable())
+
 
     def test_undeliverable_awesome(self):
-        self.fail()
+        p1 = Project(300, 1, 3)
+        p2 = Project(300, 1, 3)
+
+        awesome = Project(300, 1, 3)
+        awesome.is_awesome = True
+        awesome.extra_devs = 2
+
+        w = Workflow(6, 2, [p1, p2, awesome])
+        self.assertTrue(w.is_deliverable())
+
+        not_awesome = Project(300, 1, 3)
+        not_awesome.is_awesome = True
+        not_awesome.extra_devs = 2
+
+        w2 = w.add_project(not_awesome)
+        self.assertFalse(w2.is_deliverable())
+
+    def test_sequential_awesome(self):
+        p1 = Project(2 * 480, 1, 2)
+        p2 = Project(2 * 480, 1, 2)
+
+        awesome = Project(320, 1, 3)
+        awesome.is_awesome = True
+        awesome.extra_devs = 2
+
+        w = Workflow(6, 2, [p1, p2, awesome])
+        self.assertTrue(w.is_deliverable())
+
+        not_awesome = Project(320, 1, 1)
+        not_awesome.is_awesome = True
+        not_awesome.extra_devs = 2
+
+        w2 = w.add_project(not_awesome)
+        self.assertTrue(w2.is_deliverable())
 
     def test_work(self):
-        self.fail()
+        pass
 
 if __name__ == '__main__':
     unittest.main()
