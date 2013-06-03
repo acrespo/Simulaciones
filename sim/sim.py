@@ -9,15 +9,16 @@ from math import floor
 
 class Simulation(object):
 
-    def __init__(self, aggregator, strategy, used_resources, sleep_time=0):
+    def __init__(self, aggregator, strategy, reserved_resources, sleep_time=0):
 
         self.aggregator = aggregator
 
         self.strategy = strategy
 # 2 year warm up, and 10 year run
         self.stats = Stats(24, 120)
-        self.company = Company(20, used_resources, self.strategy, self.stats)
+        self.company = Company(20, reserved_resources, self.strategy, self.stats)
         self.sleep_time = sleep_time
+        self.reserved_resources = reserved_resources
 
     def run(self):
 
@@ -42,15 +43,21 @@ class Simulation(object):
         print("")
         print(self.stats)
 
+
+def sim_to_key(sim):
+    return sim.strategy.__name__ + "-" + str(sim.reserved_resources)
+
 class ResultAggregator(object):
 
     def __init__(self):
         self.observer = None
-        self.results = []
+        self.results = {}
 
     def add_result(self, sim):
         # TODO: Compute the output functions on this and store only that
-        self.results.append(Snapshot(sim.stats))
+        results = self.results.get(sim_to_key(sim), [])
+        results.append(Snapshot(sim.stats))
+        self.results[sim_to_key(sim)] = results
 
         if self.observer:
             self.observer.update(self)
