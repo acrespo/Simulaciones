@@ -8,7 +8,7 @@ from threading import Thread
 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
 from matplotlib.backends.backend_wxagg import NavigationToolbar2Wx as Toolbar
 
-from sim import Simulation, ResultAggregator
+from sim import Simulation, ResultAggregator, batch_run
 
 
 new_run_event = wx.NewId()
@@ -38,8 +38,19 @@ class Window(object):
 
         self.frame.Bind(wx.EVT_BUTTON, self.run_event, id = start_id)
 
+        batch_id = wx.NewId()
+        sizer.Add(wx.Button(self.frame, batch_id, 'Batch'))
+        self.frame.SetSizer(sizer)
+        sizer.Fit(self.frame)
+        self.frame.Show()
+
+        self.frame.Bind(wx.EVT_BUTTON, self.batch_event, id = batch_id)
+
         self.aggregator = ResultAggregator()
         self.app.MainLoop()
+
+    def batch_event(self, ev):
+        Thread(target = lambda: batch_run(self.aggregator)).start()
 
     def run_event(self, ev):
 
@@ -48,8 +59,7 @@ class Window(object):
         frame = RunFrame(sim.stats)
         frame.Show()
 
-        self.thread = Thread(target = sim.run)
-        self.thread.start()
+        Thread(target = sim.run).start()
 
 update_plot_event = wx.NewId()
 
