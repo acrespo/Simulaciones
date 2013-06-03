@@ -8,7 +8,7 @@ from threading import Thread
 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
 from matplotlib.backends.backend_wxagg import NavigationToolbar2Wx as Toolbar
 
-from sim import Simulation
+from sim import Simulation, ResultAggregator
 
 
 new_run_event = wx.NewId()
@@ -38,11 +38,12 @@ class Window(object):
 
         self.frame.Bind(wx.EVT_BUTTON, self.run_event, id = start_id)
 
+        self.aggregator = ResultAggregator()
         self.app.MainLoop()
 
     def run_event(self, ev):
 
-        sim = Simulation(strategies.hours_price, 4, 0.2)
+        sim = Simulation(self.aggregator, strategies.hours_price, 4, 0.2)
 
         frame = RunFrame(sim.stats)
         frame.Show()

@@ -2,14 +2,16 @@ import sample
 import strategies
 
 from models import Company, Project
-from stats import Stats
+from stats import Stats, Snapshot
 
 from time import sleep
 from math import floor
 
 class Simulation(object):
 
-    def __init__(self, strategy, used_resources, sleep_time=0):
+    def __init__(self, aggregator, strategy, used_resources, sleep_time=0):
+
+        self.aggregator = aggregator
 
         self.strategy = strategy
 # 2 year warm up, and 10 year run
@@ -19,7 +21,6 @@ class Simulation(object):
 
     def run(self):
 
-        # A 2 year run
         for t in range(self.stats.runs):
 
             print("Step %d:" % (t, ))
@@ -37,8 +38,25 @@ class Simulation(object):
 
             print(self.stats.monthly_report())
 
+        self.aggregator.add_result(self)
         print("")
         print(self.stats)
+
+class ResultAggregator(object):
+
+    def __init__(self):
+        self.observer = None
+        self.results = []
+
+    def add_result(self, sim):
+        # TODO: Compute the output functions on this and store only that
+        self.results.append(Snapshot(sim.stats))
+
+        if self.observer:
+            self.observer.update(self)
+
+    def set_observer(self, observer):
+        self.observer = observer
 
 def generate_project():
 
