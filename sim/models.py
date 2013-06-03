@@ -36,7 +36,6 @@ class Company(object):
                 can_be_delivered = new_workflow.is_deliverable()
 
 
-# TODO: Consider adding extra workforce if project.is_awesome
         if can_be_delivered:
 #            print("Accepted project " + str(project))
             self.workflow = new_workflow
