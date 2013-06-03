@@ -94,7 +94,7 @@ class Workflow(object):
             if p.extra_devs > 0:
                 last_extra_period.sort()
 
-                for i in range(p.extra_devs):
+                for i in range(min(self.reserved_resources, p.extra_devs)):
                     extra_hours += (p.periods_to_delivery - last_extra_period[i]) * 40 * 4
                     last_extra_period[i] = p.periods_to_delivery
 
