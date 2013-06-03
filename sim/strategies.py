@@ -1,3 +1,4 @@
+from operator import attrgetter
 
 def hours_price(projects):
     projects.sort(key = attrgetter('hours'), reverse = True)

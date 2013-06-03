@@ -2,35 +2,43 @@ import sample
 import strategies
 
 from models import Company, Project
+from stats import Stats
 
 from time import sleep
 from math import floor
-from operator import attrgetter
 
-def simulate_company(stats):
+class Simulation(object):
 
-    company = Company(20, 4, strategies.hours_price, stats)
+    def __init__(self, strategy, used_resources, sleep_time=0):
 
-    # A 2 year run
-    for t in range(stats.runs):
+        self.strategy = strategy
+# 2 year warm up, and 10 year run
+        self.stats = Stats(24, 120)
+        self.company = Company(20, used_resources, self.strategy, self.stats)
+        self.sleep_time = sleep_time
 
-        print("Step %d:" % (t, ))
-        stats.start_month()
+    def run(self):
 
-        projects = [generate_project() for _ in range(sample.project_count())]
-        company.decide_projects(projects)
+        # A 2 year run
+        for t in range(self.stats.runs):
 
-        used_resources = company.workflow.work()
+            print("Step %d:" % (t, ))
+            self.stats.start_month()
 
-        stats.end_month(used_resources, company.workflow.average_workload())
+            projects = [generate_project() for _ in range(sample.project_count())]
+            self.company.decide_projects(projects)
 
+            used_resources = self.company.workflow.work()
 
-        sleep(0.2)
+            self.stats.end_month(used_resources, self.company.workflow.average_workload())
 
-        #print(stats.monthly_report())
+            if self.sleep_time > 0:
+                sleep(self.sleep_time)
 
-    print("")
-    print(stats)
+            print(self.stats.monthly_report())
+
+        print("")
+        print(self.stats)
 
 def generate_project():
 

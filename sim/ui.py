@@ -1,24 +1,19 @@
 import wx
 import wx.aui
 import matplotlib as mpl
+import strategies
 
 from copy import deepcopy
 from threading import Thread
 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
 from matplotlib.backends.backend_wxagg import NavigationToolbar2Wx as Toolbar
 
-from stats import Stats
+from sim import Simulation
+
 
 new_run_event = wx.NewId()
 def bind_event(window, id, cb):
     window.Connect(-1, -1, id, cb)
-
-def start_callback(stats, cb):
-
-    def f():
-        cb(stats)
-
-    return f
 
 def fire_event(to, type, data):
     ev = wx.PyEvent()
@@ -29,10 +24,9 @@ def fire_event(to, type, data):
 
 class Window(object):
 
-    def __init__(self, cb):
+    def __init__(self):
         self.app = wx.PySimpleApp()
 
-        self.cb = cb
         self.frame = wx.Frame(None, -1, 'Sim')
         sizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -48,12 +42,12 @@ class Window(object):
 
     def run_event(self, ev):
 
-        stats = Stats(12, 24)
+        sim = Simulation(strategies.hours_price, 4, 0.2)
 
-        frame = RunFrame(stats)
+        frame = RunFrame(sim.stats)
         frame.Show()
 
-        self.thread = Thread(target = start_callback(stats, self.cb))
+        self.thread = Thread(target = sim.run)
         self.thread.start()
 
 update_plot_event = wx.NewId()
