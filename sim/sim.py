@@ -1,4 +1,5 @@
 import sample
+import strategies
 
 from models import Company, Project
 
@@ -8,16 +9,7 @@ from operator import attrgetter
 
 def simulate_company(stats):
 
-    def strategy(projects):
-        projects.sort(key = attrgetter('hours'), reverse = True)
-        projects.sort(key = attrgetter('price_per_hour'), reverse = True)
-
-        if projects:
-            projects[0].is_awesome = True
-
-        return projects
-
-    company = Company(20, 4, strategy, stats)
+    company = Company(20, 4, strategies.hours_price, stats)
 
     # A 2 year run
     for t in range(stats.runs):
