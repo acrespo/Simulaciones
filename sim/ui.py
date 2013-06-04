@@ -3,10 +3,11 @@ import wx.aui
 import matplotlib as mpl
 import strategies
 
-from copy import deepcopy
 from threading import Thread
+from time import time
+
+mpl.use('WXAgg')
 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as Canvas
-from matplotlib.backends.backend_wxagg import NavigationToolbar2Wx as Toolbar
 
 from sim import Simulation, ResultAggregator, batch_run
 
@@ -28,50 +29,79 @@ class Window(object):
 
     def __init__(self):
         self.app = wx.PySimpleApp()
+        self.frame = MainFrame()
+        self.app.MainLoop()
 
 
-        self.frame = wx.Frame(None, -1, 'Sim')
-        bind_event(self.frame, update_aggregate_event, self.update_aggregate)
+class MainFrame(wx.Frame):
 
+    def __init__(self):
+        wx.Frame.__init__(self, None, -1, 'Sim')
+        bind_event(self, update_aggregate_event, self.update_aggregate)
+
+        self.last_render = time()
         self.aggregator = ResultAggregator()
         self.aggregator.set_observer(self)
 
         sizer = wx.GridSizer(2, 2)
-        self.buttons = Buttons(self.frame, self.aggregator)
+        self.sizer = sizer;
+        self.plots = []
+
+        self.buttons = Buttons(self, self.aggregator)
         sizer.Add(self.buttons, 0, wx.ALIGN_CENTER)
 
-        self.cost_plot = Plot(self.frame)
-        sizer.Add(self.cost_plot, 0, wx.ALIGN_CENTER)
+        self.cost_plot = self.add_plot('$')
+        self.profit_plot = self.add_plot('$')
+        self.resource_usage_plot = self.add_plot('Devs')
 
-        self.profit_plot = Plot(self.frame)
-        sizer.Add(self.profit_plot, 0, wx.ALIGN_CENTER)
+        sizer.Fit(self)
+        self.SetSizer(sizer)
 
-        self.resource_usage_plot = Plot(self.frame)
-        sizer.Add(self.resource_usage_plot, 0, wx.ALIGN_CENTER)
+        self.Show()
 
-        sizer.Fit(self.frame)
-        self.frame.SetSizer(sizer)
+    def add_plot(self, ylabel):
+        plot = Plot(self)
+        axes = plot.figure.gca(
+                xlim = (0, 7),
+                adjustable = 'box',
+                ylabel = ylabel)
+        axes.set_autoscalex_on(False)
+        axes.hold(False)
 
-        self.frame.Show()
-
-        self.app.MainLoop()
+        self.sizer.Add(plot, 0, wx.ALIGN_CENTER)
+        self.plots.append(plot)
+        return plot.figure.gca()
 
     def update(self, aggregate):
-        fire_event(self.frame, update_aggregate_event, None)
+        now = time()
+        if now - self.last_render < 1:
+            return
+
+        fire_event(self, update_aggregate_event, None)
+        self.last_render = now
+
+    def batch_done(self, aggregate):
+        fire_event(self, update_aggregate_event, None)
 
     def update_aggregate(self, ev):
 
-        self.cost_plot.figure.clear()
-        self.profit_plot.figure.clear()
-        self.resource_usage_plot.figure.clear()
+        for p in self.plots:
+            p.figure.gca().cla()
 
-        self.cost_plot.figure.gca().boxplot(self.aggregator.cost)
-        self.profit_plot.figure.gca().boxplot(self.aggregator.profit)
-        self.resource_usage_plot.figure.gca().boxplot(self.aggregator.resource_usage)
+        self.cost_plot.boxplot(self.aggregator.cost)
+        self.cost_plot.set_ylabel('$')
 
-        self.cost_plot.canvas.draw()
-        self.profit_plot.canvas.draw()
-        self.resource_usage_plot.canvas.draw()
+        self.profit_plot.boxplot(self.aggregator.profit)
+        self.profit_plot.set_ylabel('$')
+
+        self.resource_usage_plot.boxplot(self.aggregator.resource_usage)
+        self.resource_usage_plot.set_ylabel('Devs')
+
+        for p in self.plots:
+            p.canvas.draw()
+
+        self.SetSize(self.Size)
+
 
 class Buttons(wx.Panel):
     def __init__(self, parent, aggregator, id = -1, **kwargs):
@@ -100,7 +130,7 @@ class Buttons(wx.Panel):
 
         sizer.Add(self.sizer, 0, wx.ALIGN_CENTER_HORIZONTAL)
         self.SetSizer(sizer)
-        sizer.Fit(self)
+        sizer.Layout()
 
     def add_button(self, text, cb):
         id = wx.NewId()

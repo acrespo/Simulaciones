@@ -27,7 +27,6 @@ class Simulation(object):
 
         for t in range(self.stats.runs):
 
-            print("Step %d:" % (t, ))
             self.stats.start_month()
 
             projects = [generate_project() for _ in range(sample.project_count())]
@@ -43,8 +42,8 @@ class Simulation(object):
             #print(self.stats.monthly_report())
 
         self.aggregator.add_result(self)
-        print("")
-        print(self.stats)
+        #print("")
+        #print(self.stats)
 
 
 def sim_to_key(sim):
@@ -74,6 +73,10 @@ class ResultAggregator(object):
         if self.observer:
             self.observer.update(self)
 
+    def batch_done(self):
+        if self.observer:
+            self.observer.batch_done(self)
+
     def set_observer(self, observer):
         self.observer = observer
 
@@ -83,10 +86,11 @@ def batch_run(aggregator):
         batch_with_strategy(aggregator, strategies.price_hours)
         batch_with_strategy(aggregator, strategies.cost_price)
     print("Batch done")
+    aggregator.batch_done()
 
 def batch_with_strategy(aggregator, strategy):
 
-    for reserved in (0, 2, 4, 6):
+    for reserved in (0, ): #2, 4, 6):
         print("Args %s %d" % (strategy.__name__, reserved))
         Simulation(aggregator, strategy, reserved).run()
 
