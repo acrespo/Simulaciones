@@ -10,8 +10,10 @@ from matplotlib.backends.backend_wxagg import NavigationToolbar2Wx as Toolbar
 
 from sim import Simulation, ResultAggregator, batch_run
 
-
 new_run_event = wx.NewId()
+update_aggregate_event = wx.NewId()
+update_plot_event = wx.NewId()
+
 def bind_event(window, id, cb):
     window.Connect(-1, -1, id, cb)
 
@@ -27,14 +29,38 @@ class Window(object):
     def __init__(self):
         self.app = wx.PySimpleApp()
 
-        self.aggregator = ResultAggregator()
 
         self.frame = wx.Frame(None, -1, 'Sim')
-        Buttons(self.frame, self.aggregator)
+        bind_event(self.frame, update_aggregate_event, self.update_aggregate)
+
+        self.aggregator = ResultAggregator()
+        self.aggregator.set_observer(self)
+
+        sizer = wx.GridSizer(2, 2)
+        sizer.Add(Buttons(self.frame, self.aggregator), 0, wx.ALIGN_CENTER)
+
+        self.cost_plot = Plot(self.frame)
+        sizer.Add(self.cost_plot, 0, wx.ALIGN_CENTER)
+
+        self.profit_plot = Plot(self.frame)
+        sizer.Add(self.profit_plot, 0, wx.ALIGN_CENTER)
+
+        self.resource_usage_plot = Plot(self.frame)
+        sizer.Add(self.resource_usage_plot, 0, wx.ALIGN_CENTER)
+
+        self.frame.SetSizer(sizer)
+        sizer.Fit(self.frame)
 
         self.frame.Show()
+        self.update_aggregate(None)
 
         self.app.MainLoop()
+
+    def update(self, aggregate):
+        fire_event(self.frame, update_aggregate_event, None)
+
+    def update_aggregate(self, ev):
+        pass
 
 class Buttons(wx.Panel):
     def __init__(self, parent, aggregator, id = -1, **kwargs):
@@ -62,7 +88,6 @@ class Buttons(wx.Panel):
         self.add_button('Facturacion - 6 devs', self.cost_6)
 
         sizer.Add(self.sizer, 0, wx.ALIGN_CENTER_HORIZONTAL)
-
         self.SetSizer(sizer)
         sizer.Fit(self)
 
@@ -105,8 +130,6 @@ class Buttons(wx.Panel):
         frame.Show()
 
         Thread(target = sim.run).start()
-
-update_plot_event = wx.NewId()
 
 class RunFrame(wx.Frame):
 
@@ -192,4 +215,5 @@ class Plot(wx.Panel):
         sizer.Add(self.canvas, 1, wx.EXPAND)
 
         self.SetSizer(sizer)
+
 
