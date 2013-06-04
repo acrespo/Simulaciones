@@ -120,7 +120,7 @@ class Workflow(object):
             if p.periods_to_delivery == 1:
                 hours = p.hours_left
             else:
-                hours = floor(p.hours_left / p.periods_to_delivery)
+                hours = ceil(p.hours_left / p.periods_to_delivery)
             to_assign = min(hours, hours_left)
 
             hours_left -= to_assign
