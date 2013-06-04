@@ -37,7 +37,8 @@ class Window(object):
         self.aggregator.set_observer(self)
 
         sizer = wx.GridSizer(2, 2)
-        sizer.Add(Buttons(self.frame, self.aggregator), 0, wx.ALIGN_CENTER)
+        self.buttons = Buttons(self.frame, self.aggregator)
+        sizer.Add(self.buttons, 0, wx.ALIGN_CENTER)
 
         self.cost_plot = Plot(self.frame)
         sizer.Add(self.cost_plot, 0, wx.ALIGN_CENTER)
@@ -48,11 +49,10 @@ class Window(object):
         self.resource_usage_plot = Plot(self.frame)
         sizer.Add(self.resource_usage_plot, 0, wx.ALIGN_CENTER)
 
-        self.frame.SetSizer(sizer)
         sizer.Fit(self.frame)
+        self.frame.SetSizer(sizer)
 
         self.frame.Show()
-        self.update_aggregate(None)
 
         self.app.MainLoop()
 
@@ -60,7 +60,18 @@ class Window(object):
         fire_event(self.frame, update_aggregate_event, None)
 
     def update_aggregate(self, ev):
-        pass
+
+        self.cost_plot.figure.clear()
+        self.profit_plot.figure.clear()
+        self.resource_usage_plot.figure.clear()
+
+        self.cost_plot.figure.gca().boxplot(self.aggregator.cost)
+        self.profit_plot.figure.gca().boxplot(self.aggregator.profit)
+        self.resource_usage_plot.figure.gca().boxplot(self.aggregator.resource_usage)
+
+        self.cost_plot.canvas.draw()
+        self.profit_plot.canvas.draw()
+        self.resource_usage_plot.canvas.draw()
 
 class Buttons(wx.Panel):
     def __init__(self, parent, aggregator, id = -1, **kwargs):

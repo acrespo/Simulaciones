@@ -156,10 +156,10 @@ class Workflow(object):
 
         self.projects = [p for p in self.projects if p.hours_left > 0]
         if [p for p in self.projects if p.periods_to_delivery == 0]:
-#            print("HOLTY SHIT WE DOOMED")
-#            print(finished)
-#            print(self.projects)
-#            print(assigned_hours)
+            print("HOLTY SHIT WE DOOMED")
+            print(finished)
+            print(self.projects)
+            print(assigned_hours)
             assert(False)
 
         return self.resources * total_hours / float(hours_in_period)

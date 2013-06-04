@@ -50,16 +50,26 @@ class Simulation(object):
 def sim_to_key(sim):
     return sim.strategy.__name__ + "-" + str(sim.reserved_resources)
 
+def sim_to_idx(sim):
+    if sim.strategy == strategies.price_hours:
+        return sim.reserved_resources / 2
+    else:
+        return 4 + sim.reserved_resources / 2
+
 class ResultAggregator(object):
 
     def __init__(self):
         self.observer = None
-        self.results = {}
+        self.cost = [[] for _ in range(8)]
+        self.profit = [[] for _ in range(8)]
+        self.resource_usage = [[] for _ in range(8)]
 
     def add_result(self, sim):
-        results = self.results.get(sim_to_key(sim), [])
-        results.append(sim.stats.objective())
-        self.results[sim_to_key(sim)] = results
+        cost, profit, resource_usage = sim.stats.objective()
+
+        self.cost[sim_to_idx(sim)].append(cost)
+        self.profit[sim_to_idx(sim)].append(profit)
+        self.resource_usage[sim_to_idx(sim)].append(resource_usage)
 
         if self.observer:
             self.observer.update(self)
@@ -69,7 +79,8 @@ class ResultAggregator(object):
 
 def batch_run(aggregator):
     print("Starting batch...")
-    for _ in range(100):
+# TODO: Make this number bigger
+    for _ in range(10):
         batch_with_strategy(aggregator, strategies.price_hours)
         batch_with_strategy(aggregator, strategies.cost_price)
     print("Batch done")
