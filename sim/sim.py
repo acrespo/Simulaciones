@@ -11,6 +11,7 @@ class Simulation(object):
 
     def __init__(self, aggregator, strategy, reserved_resources, sleep_time=0):
 
+
         self.aggregator = aggregator
 
         self.strategy = strategy
@@ -19,6 +20,8 @@ class Simulation(object):
         self.company = Company(20, reserved_resources, self.strategy, self.stats)
         self.sleep_time = sleep_time
         self.reserved_resources = reserved_resources
+
+        print(sim_to_key(self))
 
     def run(self):
 
@@ -37,7 +40,7 @@ class Simulation(object):
             if self.sleep_time > 0:
                 sleep(self.sleep_time)
 
-            print(self.stats.monthly_report())
+            #print(self.stats.monthly_report())
 
         self.aggregator.add_result(self)
         print("")
@@ -67,7 +70,7 @@ class ResultAggregator(object):
 
 def batch_run(aggregator):
     print("Starting batch...")
-    batch_with_strategy(aggregator, strategies.hours_price)
+    batch_with_strategy(aggregator, strategies.price_hours)
     batch_with_strategy(aggregator, strategies.cost_price)
     print("Batch done")
 

@@ -27,34 +27,79 @@ class Window(object):
     def __init__(self):
         self.app = wx.PySimpleApp()
 
+        self.aggregator = ResultAggregator()
+
         self.frame = wx.Frame(None, -1, 'Sim')
+        Buttons(self.frame, self.aggregator)
+
+        self.frame.Show()
+
+        self.app.MainLoop()
+
+class Buttons(wx.Panel):
+    def __init__(self, parent, aggregator, id = -1, **kwargs):
+        wx.Panel.__init__(self, parent, id = id, **kwargs)
+
+        self.aggregator = aggregator
         sizer = wx.BoxSizer(wx.VERTICAL)
 
-        start_id = wx.NewId()
-        sizer.Add(wx.Button(self.frame, start_id, 'Start'))
-        self.frame.SetSizer(sizer)
-        sizer.Fit(self.frame)
-        self.frame.Show()
-
-        self.frame.Bind(wx.EVT_BUTTON, self.run_event, id = start_id)
-
         batch_id = wx.NewId()
-        sizer.Add(wx.Button(self.frame, batch_id, 'Batch'))
-        self.frame.SetSizer(sizer)
-        sizer.Fit(self.frame)
-        self.frame.Show()
+        sizer.Add(wx.Button(self, batch_id, 'Batch'), 0, wx.ALIGN_CENTER_HORIZONTAL)
+        self.Bind(wx.EVT_BUTTON, self.batch_event, id = batch_id)
 
-        self.frame.Bind(wx.EVT_BUTTON, self.batch_event, id = batch_id)
+        self.sizer = wx.GridSizer(3, 2)
 
-        self.aggregator = ResultAggregator()
-        self.app.MainLoop()
+        self.add_button('Precio - 0 devs', self.price_0)
+        self.add_button('Facturacion - 0 devs', self.cost_0)
+
+        self.add_button('Precio - 2 devs', self.price_2)
+        self.add_button('Facturacion - 2 devs', self.cost_2)
+
+        self.add_button('Precio - 4 devs', self.price_4)
+        self.add_button('Facturacion - 4 devs', self.cost_4)
+
+        self.add_button('Precio - 6 devs', self.price_6)
+        self.add_button('Facturacion - 6 devs', self.cost_6)
+
+        sizer.Add(self.sizer, 0, wx.ALIGN_CENTER_HORIZONTAL)
+
+        self.SetSizer(sizer)
+        sizer.Fit(self)
+
+    def add_button(self, text, cb):
+        id = wx.NewId()
+        self.sizer.Add(wx.Button(self, id, text), 0, wx.ALIGN_CENTER_HORIZONTAL)
+        self.Bind(wx.EVT_BUTTON, cb, id = id)
+
+    def price_0(self, ev):
+        self.run_event(strategies.price_hours, 0)
+
+    def price_2(self, ev):
+        self.run_event(strategies.price_hours, 2)
+
+    def price_4(self, ev):
+        self.run_event(strategies.price_hours, 4)
+
+    def price_6(self, ev):
+        self.run_event(strategies.price_hours, 6)
+
+    def cost_0(self, ev):
+        self.run_event(strategies.cost_price, 0)
+
+    def cost_2(self, ev):
+        self.run_event(strategies.cost_price, 2)
+
+    def cost_4(self, ev):
+        self.run_event(strategies.cost_price, 4)
+
+    def cost_6(self, ev):
+        self.run_event(strategies.cost_price, 6)
 
     def batch_event(self, ev):
         Thread(target = lambda: batch_run(self.aggregator)).start()
 
-    def run_event(self, ev):
-
-        sim = Simulation(self.aggregator, strategies.hours_price, 4, 0.2)
+    def run_event(self, strategy, reserved):
+        sim = Simulation(self.aggregator, strategy, reserved, 0.2)
 
         frame = RunFrame(sim.stats)
         frame.Show()
