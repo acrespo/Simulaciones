@@ -66,9 +66,9 @@ class ResultAggregator(object):
         self.observer = observer
 
 def batch_run(aggregator):
-    # TODO: More strategies
     print("Starting batch...")
     batch_with_strategy(aggregator, strategies.hours_price)
+    batch_with_strategy(aggregator, strategies.cost_price)
     print("Batch done")
 
 def batch_with_strategy(aggregator, strategy):
