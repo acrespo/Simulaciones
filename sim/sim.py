@@ -57,9 +57,8 @@ class ResultAggregator(object):
         self.results = {}
 
     def add_result(self, sim):
-        # TODO: Compute the output functions on this and store only that
         results = self.results.get(sim_to_key(sim), [])
-        results.append(Snapshot(sim.stats))
+        results.append(sim.stats.objective())
         self.results[sim_to_key(sim)] = results
 
         if self.observer:

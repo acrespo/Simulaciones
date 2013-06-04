@@ -148,3 +148,10 @@ class Stats(object):
                 avg(self.active_workforce),
                 avg(self.average_workload))
 
+    def objective(self):
+        return (
+                sum(self.profit),
+                sum(self.opportunity_cost),
+                avg(self.active_workforce)
+                )
+
