@@ -69,8 +69,9 @@ class ResultAggregator(object):
 
 def batch_run(aggregator):
     print("Starting batch...")
-    batch_with_strategy(aggregator, strategies.price_hours)
-    batch_with_strategy(aggregator, strategies.cost_price)
+    for _ in range(100):
+        batch_with_strategy(aggregator, strategies.price_hours)
+        batch_with_strategy(aggregator, strategies.cost_price)
     print("Batch done")
 
 def batch_with_strategy(aggregator, strategy):
