@@ -47,8 +47,8 @@ class MainFrame(wx.Frame):
         self.sizer = sizer;
         self.plots = []
 
-        self.buttons = Buttons(self, self.aggregator)
-        sizer.Add(self.buttons, 0, wx.ALIGN_CENTER)
+        buttons = Buttons(self, self.aggregator)
+        buttons.Show()
 
         self.cost_plot = self.add_plot('$')
         self.profit_plot = self.add_plot('$')
@@ -103,9 +103,9 @@ class MainFrame(wx.Frame):
         self.SetSize(self.Size)
 
 
-class Buttons(wx.Panel):
+class Buttons(wx.Frame):
     def __init__(self, parent, aggregator, id = -1, **kwargs):
-        wx.Panel.__init__(self, parent, id = id, **kwargs)
+        wx.Frame.__init__(self, parent, id = id, **kwargs)
 
         self.aggregator = aggregator
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -129,8 +129,16 @@ class Buttons(wx.Panel):
         self.add_button('Facturacion - 6 devs', self.cost_6)
 
         sizer.Add(self.sizer, 0, wx.ALIGN_CENTER_HORIZONTAL)
+
+        save_id = wx.NewId()
+        sizer.Add(wx.Button(self, save_id, 'Save output to file'), 0, wx.ALIGN_CENTER_HORIZONTAL)
+        self.Bind(wx.EVT_BUTTON, self.save_event, id = save_id)
+
         self.SetSizer(sizer)
         sizer.Layout()
+
+    def save_event(self, ev):
+        self.aggregator.save('out-' + str(int(time())))
 
     def add_button(self, text, cb):
         id = wx.NewId()

@@ -1,5 +1,6 @@
 import sample
 import strategies
+import json
 
 from models import Company, Project
 from stats import Stats, Snapshot
@@ -79,6 +80,17 @@ class ResultAggregator(object):
 
     def set_observer(self, observer):
         self.observer = observer
+
+    def save(self, path):
+        obj = {
+                'cost': self.cost,
+                'profit': self.profit,
+                'resource_usage': self.resource_usage }
+
+        with open(path, 'w') as f:
+            f.write(json.dumps(obj))
+
+
 
 def batch_run(aggregator):
     print("Starting batch...")
