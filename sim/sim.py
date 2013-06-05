@@ -90,7 +90,7 @@ def batch_run(aggregator):
 
 def batch_with_strategy(aggregator, strategy):
 
-    for reserved in (0, ): #2, 4, 6):
+    for reserved in (0, 2, 4, 6):
         print("Args %s %d" % (strategy.__name__, reserved))
         Simulation(aggregator, strategy, reserved).run()
 
