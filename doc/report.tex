@@ -1,0 +1,133 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{t1enc}
+
+\usepackage[utf8]{inputenc}
+\usepackage{t1enc}
+\usepackage[spanish]{babel}
+\usepackage[pdftex,usenames,dvipsnames]{color}
+\usepackage[pdftex]{graphicx}
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[table]{xcolor}
+\usepackage[small,bf]{caption}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{listings}
+\usepackage{bm}
+\usepackage{times}
+\usepackage{verbatim}
+\usepackage{moreverb}
+\usepackage{fancyvrb}
+% \usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage{listings}
+\lstset{breaklines=true}
+\lstset{numbers=left, numberstyle=\scriptsize\ttfamily, numbersep=10pt, captionpos=b} 
+\lstset{basicstyle=\small\ttfamily}
+\lstset{framesep=4pt}
+
+\begin{document}
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+
+\begin{titlepage}
+        \vfill
+        \thispagestyle{empty}
+        \begin{center}
+                \includegraphics{./images/itba_logo.png}
+                \vfill
+                \Huge{Simulación de Sistemas}\\
+                \vspace{1cm}
+                \Huge{Trabajo Pr\'actico Especial}\\
+                \vspace{1cm}
+                \Huge{Estrategia comercial de una software factory}\\
+                \vspace{1cm}
+                Grupo 3
+        \end{center}
+        \vfill
+        \large{
+        \begin{tabular}{lcr}
+                Civile, Juan Pablo && 50453\\
+                Crespo, Alvaro && 50758 \\
+                Marseillan, Agustín && 50134\\
+        \end{tabular}
+}
+        \vspace{2cm}
+        \begin{center}
+                \large{17 de Junio de 2013}\\
+        \end{center}
+\end{titlepage}
+\newpage
+
+\setcounter{page}{1}
+
+\section{Introducción}
+
+El presente Trabajo Práctico busca representar la estrategia comercial de una consultora de software (\textit{software factory}). En cuanto a la selección de proyectos, se busca 
+la mejor combinación entre aprovechar el trabajo de los programadores y mantener cierta reserva de capacidad para no tener que rechazar proyectos \textit{atractivos}, es decir,
+de mayor rentabilidad.\\
+
+La simulación se basa en datos ``pseudo-reales'', dada la dificultad que implica la recolección de datos y la escasez de ellos.\\
+
+\subsection{Modelado del problema}
+
+\subsubsection{Variables de control}
+Se definen como variables de control del problema, las siguientes:
+
+\begin{itemize}
+    \item Cantidad de programadores que se ``reservan'' (para proyectos \textit{atractivos}).
+    \item Estrategia de decisión de aceptación de proyectos.
+\end{itemize}
+
+\subsection{Variables aleatorias}
+Se encontraron las siguientes variables aleatorias:
+
+\begin{itemize}
+    \item Cantidad de proyectos que llegan en un determinado período.
+    \item Tipo del proyecto (pequeño, mediano o grande).
+    \item Tamaño del proyecto (medido en horas-hombre).
+    \item Precio por hora del proyecto.
+    \item Fecha de entrega del proyecto.    
+\end{itemize}
+
+Los proyectos son modelados como una tupla de horas-hombre, precio por hora y fecha de entrega. La función de decisión sobre proyectos es la encargada de decidir 
+si un proyecto es elegible o no.
+
+\subsection{Plan de cuadros}
+% TODO
+TODO
+
+\subsection{Funciones objectivo}
+Las funciones objectivo que se consideran son:
+
+\begin{itemize}
+    \item Costo de oportunidad, ingreso que hubieran generado los proyectos rechazados.
+    \item Ingreso generado por los proyectos aceptados.
+    \item Porcentaje de recursos utilizados.
+\end{itemize}
+
+Para representar los resultados y la evolución de estas magnitudes, se tiene una vista que muestra, paso por paso, estos valores y, al final de la simulación, un
+gráfico con los intervalos de valores. \\
+
+Cabe destacar que para esto, previamente se debe debe fijar, para las estrategias de decisión que los tengan, los parámetros de entrada, buscando que sean los
+que arrojen los mejores resultados.\\
+
+\subsubsection{Restricciones}
+
+
+\section{Desarrollo}
+
+
+\section{Conclusiones}
+
+
+\clearpage
+\appendix
+\section{Anexo}
+
+\end{document}
