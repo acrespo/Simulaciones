@@ -2,12 +2,45 @@
 
 \section{Modelado del problema}
 
+Se definieron las siguientes entidades:
+
+\begin{itemize*}
+    \item Proyecto
+    \item Organización
+    \item \textit{workflow}
+\end{itemize*}
+
+Los proyectos fueron modelados como una \textit{tupla} de horas-hombre, precio por hora y fecha de entrega. Estas propiedades describen el tamaño, el ingreso que representa y el
+tiempo máximo de desarrollo, respectivamente.\\
+
+La organización representa la software factory en sí misma, y fue modelada como una entidad que posee un conjunto de desarrolladores, un \textit{workflow}, una cola donde 
+llegan los nuevos proyectos y una estrategia de aceptación de proyectos.\\
+
+La entidad \textit{workflow} está constituida por el conjunto de proyectos en desarrollo y la estrategia de asignación de recursos.\\
+
+\subsection{Restricciones}
+
+Para el modelado del problema, se ignoraron algunas variables reales del problema, que hubieran hecho impracticable la representación y resolución del mismo. El simulador se ve 
+restringido a un uso académico, dado que no tiene en cuenta muchas variables del mundo real.
+
+Las variables que se ignoran son: \\
+
+\begin{itemize}
+    \item La capacitación del personal y su curva de aprendizaje: se supone que el programador conoce el proyecto y no tarda en empezar a programar.
+    \item Nuevos requerimientos en el proyecto: Desde un primer momento, se conoce el tiempo de desarrollo que involucrará un proyecto, no se pueden agregar 
+            funcionalidades a la mitad del desarrollo.
+    \item Competencia, mercado, precios: estas variables están sujetas a la llegada de proyectos, pero no se toman como variables separadas sino que se engloban en la 
+        llegada de proyectos.
+    \item La situación financiera de la empresa: se considera que la empresa tiene fondos como para pagar sus costos de funcionamiento durante la duración de la simulación.
+    \item El trapaso de desarrolladores: se supone que la cantidad de desarrolladores permanece constante a lo largo de la simulación.
+\end{itemize}
+
 \subsection{Variables de control}
 Se definen como variables de control del problema, las siguientes:
 
 \begin{itemize}
     \item Cantidad de programadores que se ``reservan'' (para proyectos \textit{atractivos}).
-    \item Estrategia de decisión de aceptación de proyectos.
+    \item Estrategia de aceptación de proyectos.
 \end{itemize}
 
 \section{Variables aleatorias}
@@ -20,13 +53,6 @@ Se encontraron las siguientes variables aleatorias:
     \item Precio por hora del proyecto.
     \item Fecha de entrega del proyecto.    
 \end{itemize}
-
-Los proyectos son modelados como una tupla de horas-hombre, precio por hora y fecha de entrega. La función de decisión sobre proyectos es la encargada de decidir 
-si un proyecto es elegible o no.
-
-\section{Plan de cuadros}
-% TODO
-TODO
 
 \section{Funciones objectivo}
 Las funciones objectivo que se consideran son:
@@ -43,31 +69,47 @@ gráfico con los intervalos de valores. \\
 Cabe destacar que para esto, previamente se debe debe fijar, para las estrategias de decisión que los tengan, los parámetros de entrada, buscando que sean los
 que arrojen los mejores resultados.\\
 
-\subsection{Restricciones}
+\section{Plan de cuadros}
 
-Para el modelado del problema, se ignoraron varias variables reales del problema, que hubieran hecho impracticable la representación y resolución del mismo. El simulador se ve 
-restringido a un uso académico, dado que no tiene en cuenta muchas variables del mundo real.
+El diagrama de cuadros, que se utilizará para llevar a cabo la simulación será el siguiente
 
-Las variables que se ignoran son: \\
+\begin{table}[ht!]
+\begin{center}
+ \begin{tabular}{|c|c|c|c|c|}
+  \hline
+  \multirow{2}{*}{\textbf{Estrategia}} & \multirow{2}{*}{\textbf{Tipo Proyecto}} & \textbf{Ingreso} & \textbf{Costo de Oportunidad} & \textbf{\% Recursos utilizados} \\
+                                       &                                         &$[min, mean, max]$ & $[min, mean, max]$          & $[min, mean, max]$ \\
+  \hline
+  \hline
+  \multirow{3}{*}{Estrategia 1} & Grande&  $[... , ... ,...]$ & $[... , ... ,...]$ & $[... , ... ,...]$\\
+                                & Mediano & $[... , ... ,...]$ & $[... , ... ,...]$ & $[... , ... ,...]$\\
+                                & Pequeño& $[... , ... ,...]$ & $[... , ... ,...]$ & $[... , ... ,...]$\\
+  \hline
+  \multirow{3}{*}{Estrategia 2} & Grande&  $[... , ... ,...]$ & $[... , ... ,...]$ & $[... , ... ,...]$\\
+                                & Mediano & $[... , ... ,...]$ & $[... , ... ,...]$ & $[... , ... ,...]$\\
+                                & Pequeño & $[... , ... ,...]$ & $[... , ... ,...]$ & $[... , ... ,...]$\\
+  \hline
+ \end{tabular}
+ \caption{Plan de cuadros para la simulación}
+\end{center}
+\end{table}
 
-\begin{itemize}
-    \item La capacitación del personal y su curva de aprendizaje: se supone que el programador conoce el proyecto y no tarda en empezar a programar.
-    \item Nuevos requerimientos en el proyecto: Desde un primer momento, se conoce el tiempo de desarrollo que involucrará un proyecto, no se pueden agregar 
-            funcionalidades a la mitad del desarrollo.
-    \item Competencia, mercado, precios: estas variables están sujetas a la llegada de proyectos, pero no se toman como variables separadas sino que se engloban en la 
-        llegada de proyectos.
-    \item La situación financiera de la empresa: se considera que la empresa tiene fondos como para pagar sus costos de funcionamiento durante la duración de la simulación.
-    \item El trapaso de desarrolladores: se supone que la cantidad de desarrolladores permanece constante a lo largo de la simulación.
-\end{itemize}
-
+Durante la corrida de la simulación
+%TODO
+TODO
 
 \section{Diagrama de Bloques}
-TODO
+
+\begin{center}
+ \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{./images/bloques.png}
+ % bloques.png: 1424x1290 pixel, 150dpi, 24.11x21.84 cm, bb=0 0 683 619
+\end{center}
+
 
 \section{Diagrama de Flujo}
 
 \begin{multicols}{2}
-Muestras artificiales (MA)
+Muestras artificiales (MA)\\
 Variables
 
 \begin{enumerate*}
@@ -109,19 +151,18 @@ las estrategias que se estudiarán. Debe ser tomado en cuenta que independientem
 antes de su fecha de entrega el valor de $D(P)$, es decir la función que acepta o no el proyecto, es siempre $NO$.
 
 \begin{enumerate}
-    \item Se ordenan los proyectos arribados según el cociente Ganancia / Tamaño, y se aceptan los proyectos que tengan los mayores valores de tal cociente,
- o que obtengan valores mayores a un cierto umbral.
-    Variables: $\mu$: valor mínimo de aceptación para el ratio Ganancia / Tamaño de un proyecto
+    \item Se ordenan los proyectos arribados según el precio por hora, y se aceptan, en caso de ser posible su desarrollo, en ese orden.\\
 
-    \item Se ordena los proyectos encolados según su tamaño, y se aceptan los de menor tamaño o aquellos que sean menor a un cierto tamaño. 
-    Variables: $\tau$: valor máximo de tamaño de un proyecto para su aceptación
-
+    \item Se ordenan los proyectos encolados según su facturación (precio por hora * horas-hombre), y se aceptan, en caso de ser posible, en ese orden.\\
 \end{enumerate}
+
+
 
 \section{Estrategia de asignación de recursos}
 
-Para la asignación de recursos, al comienzo de cada período, se calcula la cantidad de horas/hombre que se van a asignar al proyecto de la siguiente manera: 
-se divide el total de horas/hombre restantes del proyecto, llamémosle W, y se lo divide por la 
-cantidad de períodos que faltan hasta la fecha entrega. En caso de queden recursos sin asignar, se asignarán al proyecto más cercano a su fecha de entrega. 
+Para la asignación de recursos, al comienzo de cada período, se calcula la cantidad de horas/hombre que se van a asignar al proyecto de la siguiente manera: \\
+se divide el total de horas/hombre restantes del proyecto, llamémosle $W$, y se lo divide por la 
+cantidad de períodos que faltan hasta la fecha entrega. Esto es la cantidad de horas que se le asignarán a ese proyecto en este período.
+En caso de queden recursos sin asignar, se asignarán al proyecto más cercano a su fecha de entrega. 
 De esta forma, se busca balancear la asignación de recursos, buscando cumplir con las fechas de entrega, y en caso de ser posible, adelantar los proyectos 
-cercanos a su fin, con el objetivo de poder aceptar otros nuevos.
+cercanos a su fin, con el objetivo de liberar recursos para poder aceptar otros nuevos.
