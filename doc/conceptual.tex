@@ -96,10 +96,15 @@ El diagrama de cuadros, que se utilizará para llevar a cabo la simulación ser�
 
 \section{Diagrama de Bloques}
 
+\begin{figure}[H]
 \begin{center}
  \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{./images/bloques.png}
  % bloques.png: 1424x1290 pixel, 150dpi, 24.11x21.84 cm, bb=0 0 683 619
 \end{center}
+
+\caption{Diagrama de bloque del simulador}
+\label{fig:bloque}
+\end{figure}
 
 
 \section{Diagrama de Flujo}
@@ -117,7 +122,7 @@ Variables
             VA Triangular(a, b, c)
     \item Costo Hora-Hombre [\$]\\
             VA Triangular(a, b, c)
-    \item Plazo de Entrega del Proyecto [hs]\\
+    \item Desarrolladores pretendidos [hombres]\\
             VA Triangular(a, b, c)
 \end{enumerate*}
 \vfill
@@ -131,14 +136,23 @@ Variables
  \item CO: Costo de Oportunidad
  \item M(P): Ganancia del proyecto P
  \item R(P): Función de asignación de recursos usados por el proyecto P
- \item T(P): Tiempo que abarca el proyecto P
- \item D: Función o Estrategia de decisión, toma un proyecto y devuelve si se lo acepta o no
- \item O(P\_1, ..., P\_n, D): Ordena los proyectos P\_1 a P\_n según el criterio de la estrategia D
+ \item D(P): Decide si un proyecto es entregable en plazo considerando los proyectos que ya se tomaron
+ \item O(P\_1, ..., P\_n): Ordena los proyectos P\_1 a P\_n según el criterio de la estrategia y marca al resultante P\_1 como atractivo
+ \item A(P): Si la estrategia considera el proyecto atractivo
+ \item E(P): Desarrolladores reservados asignados al proyecto
 
 \end{itemize*}
 
 \end{multicols}
 
+\begin{figure}[H]
+\begin{center}
+ \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{./images/flujo.png}
+\end{center}
+
+\caption{Diagrama de flujo del simulador}
+\label{fig:flujo}
+\end{figure}
 
 \section{Estrategias de decisión}
 
