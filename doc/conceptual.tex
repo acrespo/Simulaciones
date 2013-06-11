@@ -1,0 +1,127 @@
+\part*{Modelo Conceptual}
+
+\section{Modelado del problema}
+
+\subsection{Variables de control}
+Se definen como variables de control del problema, las siguientes:
+
+\begin{itemize}
+    \item Cantidad de programadores que se ``reservan'' (para proyectos \textit{atractivos}).
+    \item Estrategia de decisión de aceptación de proyectos.
+\end{itemize}
+
+\section{Variables aleatorias}
+Se encontraron las siguientes variables aleatorias:
+
+\begin{itemize}
+    \item Cantidad de proyectos que llegan en un determinado período.
+    \item Tipo del proyecto (pequeño, mediano o grande).
+    \item Tamaño del proyecto (medido en horas-hombre).
+    \item Precio por hora del proyecto.
+    \item Fecha de entrega del proyecto.    
+\end{itemize}
+
+Los proyectos son modelados como una tupla de horas-hombre, precio por hora y fecha de entrega. La función de decisión sobre proyectos es la encargada de decidir 
+si un proyecto es elegible o no.
+
+\section{Plan de cuadros}
+% TODO
+TODO
+
+\section{Funciones objectivo}
+Las funciones objectivo que se consideran son:
+
+\begin{itemize}
+    \item Costo de oportunidad, ingreso que hubieran generado los proyectos rechazados.
+    \item Ingreso generado por los proyectos aceptados.
+    \item Porcentaje de recursos utilizados.
+\end{itemize}
+
+Para representar los resultados y la evolución de estas magnitudes, se tiene una vista que muestra, paso por paso, estos valores y, al final de la simulación, un
+gráfico con los intervalos de valores. \\
+
+Cabe destacar que para esto, previamente se debe debe fijar, para las estrategias de decisión que los tengan, los parámetros de entrada, buscando que sean los
+que arrojen los mejores resultados.\\
+
+\subsection{Restricciones}
+
+Para el modelado del problema, se ignoraron varias variables reales del problema, que hubieran hecho impracticable la representación y resolución del mismo. El simulador se ve 
+restringido a un uso académico, dado que no tiene en cuenta muchas variables del mundo real.
+
+Las variables que se ignoran son: \\
+
+\begin{itemize}
+    \item La capacitación del personal y su curva de aprendizaje: se supone que el programador conoce el proyecto y no tarda en empezar a programar.
+    \item Nuevos requerimientos en el proyecto: Desde un primer momento, se conoce el tiempo de desarrollo que involucrará un proyecto, no se pueden agregar 
+            funcionalidades a la mitad del desarrollo.
+    \item Competencia, mercado, precios: estas variables están sujetas a la llegada de proyectos, pero no se toman como variables separadas sino que se engloban en la 
+        llegada de proyectos.
+    \item La situación financiera de la empresa: se considera que la empresa tiene fondos como para pagar sus costos de funcionamiento durante la duración de la simulación.
+    \item El trapaso de desarrolladores: se supone que la cantidad de desarrolladores permanece constante a lo largo de la simulación.
+\end{itemize}
+
+
+\section{Diagrama de Bloques}
+TODO
+
+\section{Diagrama de Flujo}
+
+\begin{multicols}{2}
+Muestras artificiales (MA)
+Variables
+
+\begin{enumerate*}
+    \item Cantidad de Proyectos por mes(CA)\\
+            VA Poisson ($\lambda$)
+    \item Tipo de Proyecto (TP)\\
+            VA Uniforme
+    \item Tamaño de Proyecto [hs]\\
+            VA Triangular(a, b, c)
+    \item Costo Hora-Hombre [\$]\\
+            VA Triangular(a, b, c)
+    \item Plazo de Entrega del Proyecto [hs]\\
+            VA Triangular(a, b, c)
+\end{enumerate*}
+\vfill
+\columnbreak
+\begin{itemize*}
+ \item T: Tiempo del reloj de la simulación
+ \item Tmax: Cantidad de tiempo a simular
+ \item P: Proyecto actual
+ \item R: Recursos (programadores)
+ \item M: Dinero
+ \item CO: Costo de Oportunidad
+ \item M(P): Ganancia del proyecto P
+ \item R(P): Función de asignación de recursos usados por el proyecto P
+ \item T(P): Tiempo que abarca el proyecto P
+ \item D: Función o Estrategia de decisión, toma un proyecto y devuelve si se lo acepta o no
+ \item O(P\_1, ..., P\_n, D): Ordena los proyectos P\_1 a P\_n según el criterio de la estrategia D
+
+\end{itemize*}
+
+\end{multicols}
+
+
+\section{Estrategias de decisión}
+
+Tanto en el diagrama de bloques como en el diagrama de flujo se observa una función o estrategia de decisión para aceptar o no un proyecto. A continuación se detallan 
+las estrategias que se estudiarán. Debe ser tomado en cuenta que independientemente de la estrategia, si no se tienen suficientes recursos como para completar el proyecto 
+antes de su fecha de entrega el valor de $D(P)$, es decir la función que acepta o no el proyecto, es siempre $NO$.
+
+\begin{enumerate}
+    \item Se ordenan los proyectos arribados según el cociente Ganancia / Tamaño, y se aceptan los proyectos que tengan los mayores valores de tal cociente,
+ o que obtengan valores mayores a un cierto umbral.
+    Variables: $\mu$: valor mínimo de aceptación para el ratio Ganancia / Tamaño de un proyecto
+
+    \item Se ordena los proyectos encolados según su tamaño, y se aceptan los de menor tamaño o aquellos que sean menor a un cierto tamaño. 
+    Variables: $\tau$: valor máximo de tamaño de un proyecto para su aceptación
+
+\end{enumerate}
+
+\section{Estrategia de asignación de recursos}
+
+Para la asignación de recursos, al comienzo de cada período, se calcula la cantidad de horas/hombre que se van a asignar al proyecto de la siguiente manera: 
+se divide el total de horas/hombre restantes del proyecto, llamémosle W, y se lo divide por la 
+cantidad de períodos que faltan hasta la fecha entrega. En caso de queden recursos sin asignar, se asignarán al proyecto más cercano a su fecha de entrega. 
+De esta forma, se busca balancear la asignación de recursos, buscando cumplir con las fechas de entrega, y en caso de ser posible, adelantar los proyectos 
+cercanos a su fin, con el objetivo de poder aceptar otros nuevos.
