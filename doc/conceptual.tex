@@ -1,5 +1,13 @@
 \part*{Modelo Conceptual}
 
+\section{Formulación del problema}
+
+El presente Trabajo Práctico busca representar la estrategia comercial de una consultora de software (\textit{software factory}). En cuanto a la selección de proyectos, se busca 
+la mejor combinación entre aprovechar el trabajo de los programadores y mantener cierta reserva de capacidad para no tener que rechazar proyectos \textit{atractivos}, es decir,
+de mayor rentabilidad.\\
+
+La simulación se basó en datos ``pseudo-reales'', dada la dificultad que implicaba la recolección de datos y la escasez de ellos.\\
+
 \section{Modelado del problema}
 
 Se definieron las siguientes entidades:
@@ -7,7 +15,7 @@ Se definieron las siguientes entidades:
 \begin{itemize*}
     \item Proyecto
     \item Organización
-    \item \textit{workflow}
+    \item \textit{Workflow}
 \end{itemize*}
 
 Los proyectos fueron modelados como una \textit{tupla} de horas-hombre, precio por hora y fecha de entrega. Estas propiedades describen el tamaño, el ingreso que representa y el
@@ -18,7 +26,7 @@ llegan los nuevos proyectos y una estrategia de aceptación de proyectos.\\
 
 La entidad \textit{workflow} está constituida por el conjunto de proyectos en desarrollo y la estrategia de asignación de recursos.\\
 
-\subsection{Restricciones}
+\subsection{Restricciones - Límites del problema}
 
 Para el modelado del problema, se ignoraron algunas variables reales del problema, que hubieran hecho impracticable la representación y resolución del mismo. El simulador se ve 
 restringido a un uso académico, dado que no tiene en cuenta muchas variables del mundo real.
