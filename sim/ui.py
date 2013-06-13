@@ -90,13 +90,13 @@ class MainFrame(wx.Frame):
         for p in self.plots:
             p.figure.gca().cla()
 
-        self.cost_plot.boxplot(self.aggregator.cost)
+        self.cost_plot.boxplot(self.aggregator.cost, sym = '')
         self.cost_plot.set_ylabel('$')
 
-        self.profit_plot.boxplot(self.aggregator.profit)
+        self.profit_plot.boxplot(self.aggregator.profit, sym = '')
         self.profit_plot.set_ylabel('$')
 
-        self.resource_usage_plot.boxplot(self.aggregator.resource_usage)
+        self.resource_usage_plot.boxplot(self.aggregator.resource_usage, sym = '')
         self.resource_usage_plot.set_ylabel('Devs')
 
         for p in self.plots:
@@ -235,20 +235,20 @@ class RunFrame(wx.Frame):
         stats = ev.data
         x = stats.current_step + 1
 
-        p1, = self.active_workforce_axes.step(x, stats.active_workforce[-1], 'g*', label = "Active Workforce")
+        p1, = self.active_workforce_axes.step(x, stats.active_workforce[-1], 'g*', label = "Devs Activos")
         self.legend(self.active_workforce_axes, [p1])
 
-        p1, = self.sales_axes.step(x, stats.hours_sold[-1], 'r.', label = "Sold Hours")
-        p2, = self.declined_axes.step(x, stats.hours_declined[-1], 'b*', label = "Declined Hours")
+        p1, = self.sales_axes.step(x, stats.hours_sold[-1], 'r.', label = "Horas vendidas")
+        p2, = self.declined_axes.step(x, stats.hours_declined[-1], 'b*', label = "Horas rechazadas")
 
         self.legend(self.sales_axes, [p1, p2])
 
-        p1, = self.sales_money_axes.step(x, stats.profit[-1], 'r.', label = "Profit")
-        p2, = self.declined_money_axes.step(x, stats.opportunity_cost[-1], 'b*', label = "Opportunity cost")
+        p1, = self.sales_money_axes.step(x, stats.profit[-1], 'r.', label = "Ganancia")
+        p2, = self.declined_money_axes.step(x, stats.opportunity_cost[-1], 'b*', label = "Costo de oportunidad")
 
         self.legend(self.sales_money_axes, [p1, p2])
 
-        p1, = self.workload_axes.step(x, stats.average_workload[-1], 'b*', label = "Fixed Average Workload")
+        p1, = self.workload_axes.step(x, stats.average_workload[-1], 'b*', label = "Trabajo Comprometido Promedio")
 
         self.legend(self.workload_axes, [p1])
 
