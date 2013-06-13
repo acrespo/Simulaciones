@@ -7,7 +7,7 @@
     \item[B)] Tipo de proyecto
     \item[C)] Tamaño de proyecto [h]
     \item[D)] Precio hora-hombre del proyecto [\$]
-    \item[E)] Plazo de entrega del proyecto [h]
+    \item[E)] Desarrolladores Pretendidos del proyecto
 \end{itemize}
 
 \section{Estrategia de obtención}
@@ -108,25 +108,36 @@ parámetros fueron (200, 310,290), (200, 240, 220) y (180, 310, 230), respectiva
 \caption{Histograma de precio por hora de proyecto, para proyectos de tamaño pequeño.}
 \end{figure}
 
-\section*{Fecha de entrega de proyecto}
-
-Para la generación de esta variable aleatoria, dada su complejidad, se buscó relacionarla con la variable aleatoria de las horas hombre de un proyeco y la cantidad de desarrolladores
-promedio que se asignan a cada tipo de proyecto (pequeño, mediano o grande). El resultado fue la utilización de una distribución triangular, cuyo parámetros se definieron de la siguiente 
-forma:
+\section*{Desarrolladores Pretendidos de proyecto}
+ 
+Para la generación de esta variable, se estableció el uso de una distribución uniforme con las siguientes proporciones: 
 
 \begin{itemize*}
-    \item[($a$)] el mínimo de la distribución se forma tomando el valor de la variable Horas Hombre y diviéndolo por el \textit{máximo} de la cantidad de desarrolladores que en promedio
-    se le asignan a ese tipo de proyecto.
-    \item[($b$)] el máximo de la distribución surge de la división entre el valor de la variable Horas Hombre y el \textit{mínimo} de la cantidad de desarrolladores que en promedio
-    se le asignan a ese tipo de proyecto.
-    \item[($c$)] la moda de la distribución se calcula, de la misma forma, diviéndo el valor de la variable Horas Hombre por la \textit{moda} de la cantidad de desarrolladores que en promedio
-    se le asignan a ese tipo de proyecto.
+    \item Mínimo valor: 30\%
+    \item Valor medio: 50\%
+    \item Máximo valor: 20\%
 \end{itemize*}
- 
+
+Y, estos valores, varían según el tipo de proyecto, siempre manteniendo estas relaciones: 
+
+\begin{itemize*}
+    \item Valor medio = Mínimo valor + 1
+    \item Máximo valor = Mínimo valor + 2
+\end{itemize*}
+
+y utilizando como valor mínimo para tipo de proyecto los siguientes valores: 
+
+
+\begin{itemize*}
+    \item Grande: 5
+    \item Mediano: 3
+    \item Pequeño: 1
+\end{itemize*}
+
 
 \section*{Tabla de valores}
 
-A continuación se presentan los resultados de esta sección resumidos en 2 tablas de valores, con los parámetros de cada distribución.\\
+A continuación se presentan los resultados de esta sección resumidos en 3 tablas de valores, con los parámetros de cada distribución.\\
 
 \begin{table}[H]
 \begin{center}
@@ -150,9 +161,7 @@ A continuación se presentan los resultados de esta sección resumidos en 2 tabl
 \end{table}
 
 \begin{table}[H]
-
 \begin{center}
-
 \begin{tabular}{|l|l|l|l|l|}
 \hline
                     & Tipo      & Mín.    & Máx.    & Moda\\
@@ -169,19 +178,29 @@ A continuación se presentan los resultados de esta sección resumidos en 2 tabl
 \hline
                     & Pequeño   & 200     & 300     & 290\\
 \hline
-    Fecha de Entrega& Grande    & Horas/6 & Horas/4 & Horas/5\\
+\end{tabular}
+\end{center}
+\caption{Cuadro de valores para los parámetros de las distribuciones según tipo de proyecto}
+\label{tab:va}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|l|l|l|l|l|}
 \hline
-                    & Mediano   & Horas/4 & Horas/2 & Horas/3\\
+                    & Tipo      & 30\%    & 50\%    & 20\%\\
 \hline
-                    & Pequeño   & Horas/3 & Horas/1 & Horas/2\\
+Devs Pretendidos    & Grande    & 5       & 6       & 7\\
+\hline
+                    & Mediano   & 3       & 4       & 5\\
+\hline
+                    & Pequeño   & 1       & 2      & 3\\
 \hline
 \end{tabular}
-
 \end{center}
-
-\caption{Cuadro de valores para las distribuciones según tipo de proyecto}
+\caption{Cuadro de valores para la distribución de desarrolladores pretendidos según tipo de proyecto}
 \label{tab:va}
-
-
 \end{table}
+
+
 
