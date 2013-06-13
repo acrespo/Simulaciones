@@ -50,16 +50,16 @@ class MainFrame(wx.Frame):
         buttons = Buttons(self, self.aggregator)
         buttons.Show()
 
-        self.cost_plot = self.add_plot('$')
-        self.profit_plot = self.add_plot('$')
-        self.resource_usage_plot = self.add_plot('Devs')
+        self.cost_plot = self.add_plot('$', 'Costo de Oportunidad')
+        self.profit_plot = self.add_plot('$', 'Ganancia')
+        self.resource_usage_plot = self.add_plot('Devs', '# devs activos')
 
         sizer.Fit(self)
         self.SetSizer(sizer)
 
         self.Show()
 
-    def add_plot(self, ylabel):
+    def add_plot(self, ylabel, title):
         plot = Plot(self)
         axes = plot.figure.gca(
                 xlim = (0, 7),
@@ -67,6 +67,8 @@ class MainFrame(wx.Frame):
                 ylabel = ylabel)
         axes.set_autoscalex_on(False)
         axes.hold(False)
+
+        plot.figure.suptitle(title)
 
         self.sizer.Add(plot, 0, wx.ALIGN_CENTER)
         self.plots.append(plot)
