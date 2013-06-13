@@ -40,7 +40,7 @@ Las variables que se ignoran son: \\
     \item Competencia, mercado, precios: estas variables están sujetas a la llegada de proyectos, pero no se toman como variables separadas sino que se engloban en la 
         llegada de proyectos.
     \item La situación financiera de la empresa: se considera que la empresa tiene fondos como para pagar sus costos de funcionamiento durante la duración de la simulación.
-    \item El trapaso de desarrolladores: se supone que la cantidad de desarrolladores permanece constante a lo largo de la simulación.
+    \item El traspaso de desarrolladores: se supone que la cantidad de desarrolladores permanece constante a lo largo de la simulación.
 \end{itemize}
 
 \subsection{Variables de control}
@@ -185,7 +185,7 @@ antes de su fecha de entrega el valor de $D(P)$, es decir la función que acepta
 \section{Estrategia de asignación de recursos}
 
 Para la asignación de recursos, al comienzo de cada período, se calcula la cantidad de horas/hombre que se van a asignar al proyecto de la siguiente manera: \\
-se divide el total de horas/hombre restantes del proyecto, llamémosle $W$, y se lo divide por la 
+se toma el total de horas/hombre restantes del proyecto, llamémosle $W$, y se lo divide por la 
 cantidad de períodos que faltan hasta la fecha entrega. Esto es la cantidad de horas que se le asignarán a ese proyecto en este período.
 En caso de queden recursos sin asignar, se asignarán al proyecto más cercano a su fecha de entrega. 
 De esta forma, se busca balancear la asignación de recursos, buscando cumplir con las fechas de entrega, y en caso de ser posible, adelantar los proyectos 
