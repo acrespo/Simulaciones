@@ -2,7 +2,7 @@ from numpy import random
 from math import floor, ceil
 
 def project_count():
-    return int(floor(random.poisson(2.0)))
+    return int(floor(random.poisson(3.0)))
 
 def project_size():
     seed = random.sample()
