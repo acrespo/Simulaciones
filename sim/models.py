@@ -14,10 +14,11 @@ class Company(object):
         self.declined = 0
 
         self.stats = stats
+        self.project_history = []
 
     def decide_projects(self, projects):
 
-        projects = self.strategy(projects)
+        projects = self.strategy(self, projects)
 #        print('\t' + '\n\t'.join([repr(p) for p in projects]))
 
         for p in projects:
