@@ -54,6 +54,18 @@ class MainFrame(wx.Frame):
         self.profit_plot = self.add_plot('$', 'Ganancia')
         self.resource_usage_plot = self.add_plot('Devs', '# devs activos')
 
+        legend_sizer = wx.BoxSizer(wx.VERTICAL)
+        legend_sizer.Add(wx.StaticText(self, label = 'Leyenda'))
+        legend_sizer.Add(wx.StaticText(self, label = '\t 1 - Precio (0 Devs)'))
+        legend_sizer.Add(wx.StaticText(self, label = '\t 2 - Precio (2 Devs)'))
+        legend_sizer.Add(wx.StaticText(self, label = '\t 3 - Precio (4 Devs)'))
+        legend_sizer.Add(wx.StaticText(self, label = '\t 4 - Precio (6 Devs)'))
+        legend_sizer.Add(wx.StaticText(self, label = '\t 5 - Facturacion (0 Devs)'))
+        legend_sizer.Add(wx.StaticText(self, label = '\t 6 - Facturacion (2 Devs)'))
+        legend_sizer.Add(wx.StaticText(self, label = '\t 7 - Facturacion (4 Devs)'))
+        legend_sizer.Add(wx.StaticText(self, label = '\t 8 - Facturacion (6 Devs)'))
+        sizer.Add(legend_sizer, 1, wx.EXPAND)
+
         sizer.Fit(self)
         self.SetSizer(sizer)
 
