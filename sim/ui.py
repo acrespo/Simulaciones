@@ -203,38 +203,38 @@ class RunFrame(wx.Frame):
         self.sizer = wx.GridSizer(4, 2)
         self.plots = []
 
-        self.active_workforce_axes = self.add_plot(stats, "Devs")
+        self.active_workforce_axes = self.add_plot(stats, "Devs").figure.gca()
 
-        self.sales_axes = self.add_plot(stats, "HH")
-        self.declined_axes = self.add_subplot(self.sales_axes)
+        self.sales_plot = self.add_plot(stats, "HH")
 
-        self.sales_money_axes = self.add_plot(stats, "$")
-        self.declined_money_axes = self.add_subplot(self.sales_money_axes)
+        self.sales_money_plot = self.add_plot(stats, "$")
 
-        self.workload_axes = self.add_plot(stats, "HH")
+        self.workload_plot = self.add_plot(stats, "HH")
 
         self.SetSizer(self.sizer)
         self.sizer.Fit(self)
 
         bind_event(self, update_plot_event, self.update_plot)
 
-    def add_plot(self, stats, ylabel):
-        plot = Plot(self)
+    def get_axes(self, plot, stats, ylabel):
+
+        plot.figure.clear()
         axes = plot.figure.gca(
-                xlim = (stats.warm_up, stats.runs),
+                xlim = (stats.warm_up / 3, stats.runs / 3),
                 adjustable = 'box',
-                xlabel = "Months",
+                xlabel = "Trimester",
                 ylabel = ylabel)
         axes.set_autoscalex_on(False)
 
+        return axes
+
+    def add_plot(self, stats, ylabel):
+        plot = Plot(self)
+        self.get_axes(plot, stats, ylabel)
+
         self.sizer.Add(plot)
         self.plots.append(plot)
-        return plot.figure.gca()
-
-    def add_subplot(self, axes):
-        new_axes = axes.twinx()
-        new_axes.set_autoscalex_on(False)
-        return new_axes
+        return plot
 
     def end_month(self, stats):
         fire_event(self, update_plot_event, stats)
@@ -242,27 +242,36 @@ class RunFrame(wx.Frame):
     def legend(self, axes, lines):
         axes.legend(lines, [l.get_label() for l in lines])
 
-
     def update_plot(self, ev):
         stats = ev.data
-        x = stats.current_step + 1
+        if stats.current_step <= stats.warm_up or stats.current_step % 3:
+            return None
 
-        p1, = self.active_workforce_axes.step(x, stats.active_workforce[-1], 'g*', label = "Devs Activos")
+        x = (stats.current_step / 3) + 1
+        x_r = range(stats.warm_up / 3, stats.current_step / 3)
+
+        p1,  = self.active_workforce_axes.step(x, sum(stats.active_workforce[-3:]) / 3.0, 'g*', label = "Devs Activos")
         self.legend(self.active_workforce_axes, [p1])
 
-        p1, = self.sales_axes.step(x, stats.hours_sold[-1], 'r.', label = "Horas vendidas")
-        p2, = self.declined_axes.step(x, stats.hours_declined[-1], 'b*', label = "Horas rechazadas")
+        trimesterify = lambda d: [sum(d[r:r+3]) for r in range(0, stats.current_step - stats.warm_up, 3)]
 
-        self.legend(self.sales_axes, [p1, p2])
+        axes = self.get_axes(self.sales_plot, stats, 'HH')
+        hours_sold = trimesterify(stats.hours_sold)
 
-        p1, = self.sales_money_axes.step(x, stats.profit[-1], 'r.', label = "Ganancia")
-        p2, = self.declined_money_axes.step(x, stats.opportunity_cost[-1], 'b*', label = "Costo de oportunidad")
+        p1 = axes.bar(x_r, hours_sold, color = 'g', label = "Horas vendidas")
+        p2 = axes.bar(x_r, trimesterify(stats.hours_declined), color = 'r', bottom = hours_sold, label = "Horas rechazadas")
+        self.legend(axes, [p1, p2])
 
-        self.legend(self.sales_money_axes, [p1, p2])
+        axes = self.get_axes(self.sales_money_plot, stats, '$')
+        profit = trimesterify(stats.profit)
 
-        p1, = self.workload_axes.step(x, stats.average_workload[-1], 'b*', label = "Trabajo Comprometido Promedio")
+        p1 = axes.bar(x_r, profit, color = 'g', label = "Ganancia")
+        p2 = axes.bar(x_r, trimesterify(stats.opportunity_cost),  bottom = profit, color = 'r', label = "Costo de oportunidad")
+        self.legend(axes, [p1, p2])
 
-        self.legend(self.workload_axes, [p1])
+        axes = self.get_axes(self.workload_plot, stats, 'HH')
+        p1 = axes.bar(x_r, trimesterify(stats.average_workload), label = "Trabajo Comprometido Promedio")
+        self.legend(axes, [p1])
 
         for p in self.plots:
             p.canvas.draw()
