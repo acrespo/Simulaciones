@@ -36,7 +36,7 @@ class Window(object):
 class MainFrame(wx.Frame):
 
     def __init__(self):
-        wx.Frame.__init__(self, None, -1, 'Sim')
+        wx.Frame.__init__(self, None, -1, 'Funciones Objetivo')
         bind_event(self, update_aggregate_event, self.update_aggregate)
 
         self.last_render = time()
@@ -107,7 +107,7 @@ class MainFrame(wx.Frame):
 
 class Buttons(wx.Frame):
     def __init__(self, parent, aggregator, id = -1, **kwargs):
-        wx.Frame.__init__(self, parent, id = id, **kwargs)
+        wx.Frame.__init__(self, parent, title = 'Control', id = id, **kwargs)
 
         self.aggregator = aggregator
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -185,7 +185,7 @@ class Buttons(wx.Frame):
 class RunFrame(wx.Frame):
 
     def __init__(self, stats):
-        wx.Frame.__init__(self, None, -1, 'Run')
+        wx.Frame.__init__(self, None, -1, 'Simulacion')
 
         stats.set_observer(self)
         self.sizer = wx.GridSizer(4, 2)
