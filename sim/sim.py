@@ -1,6 +1,6 @@
 import sample
 import strategies
-import json
+import csv
 
 from models import Company, Project
 from stats import Stats, Snapshot
@@ -56,6 +56,12 @@ def sim_to_idx(sim):
     else:
         return 4 + sim.reserved_resources / 2
 
+def idx_to_sim(idx):
+    if idx < 4:
+        return 'price_hours-' + str(2 * idx)
+    else:
+        return 'cost_price-' + str((idx - 4) * 2)
+
 class ResultAggregator(object):
 
     def __init__(self):
@@ -82,19 +88,20 @@ class ResultAggregator(object):
         self.observer = observer
 
     def save(self, path):
-        obj = {
-                'cost': self.cost,
-                'profit': self.profit,
-                'resource_usage': self.resource_usage }
 
         with open(path, 'w') as f:
-            f.write(json.dumps(obj))
+            writer = csv.writer(f)
+
+            for idx, strategy in enumerate(zip(self.cost, self.profit, self.resource_usage)):
+
+                for cost, profit, usage in zip(*strategy):
+                    writer.writerow([idx_to_sim(idx), cost, profit, usage])
 
 
 
 def batch_run(aggregator):
     print("Starting batch...")
-    for _ in range(1000):
+    for _ in range(100):
         batch_with_strategy(aggregator, strategies.price_hours)
         batch_with_strategy(aggregator, strategies.cost_price)
     print("Batch done")

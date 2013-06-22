@@ -152,7 +152,7 @@ class Buttons(wx.Frame):
         sizer.Layout()
 
     def save_event(self, ev):
-        self.aggregator.save('out-' + str(int(time())))
+        self.aggregator.save('out-' + str(int(time())) + '.csv')
 
     def add_button(self, text, cb):
         id = wx.NewId()
