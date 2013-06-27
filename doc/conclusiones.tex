@@ -5,6 +5,37 @@
 % TODO: Explicar que hicimos 100 corridas
 % TODO: Explicar los rotulos de los graficos (price_hours-0 y eso)
 
+Previo al cálculo de los resultados, se calcuó el número $N$ de corridas necesarias para obtener valores dentro del intervalo de confianza deseado. En particular se buscaba 
+un intervalo del 5\% con un nivel de significación del 99\%. El cálculo del número de corridas arrojó que 100 corridas serían suficientes para lograr estos niveles de confianza.\\
+
+A continuación se presentan el cuadro de resultados, y los gráficos de las funciones objectivos, para estrategia de aceptación de recursos. Cabe destacar que las estrategias
+están formadas por una combinación de 2 factores: la estrategia de aceptación en sí misma, y la cantidad de desarrolladores que se reservan para proyectos atractivos. Es por estos
+que los rótulos tienen la siguiente forma: ``Nombre Estrategia - N devs'', como por ejemplo ``Precio HH - 2 devs'', que se refiere a la combinación de la estrategia 1 con 
+2 desarrolladores reservados para proyectos atractivos.\\
+
+
+\begin{table}[H]
+\hspace*{-2cm}
+ \begin{tabular}{|c|c|c|c|c|}
+  \hline
+  \multirow{2}{*}{\textbf{Estrategia}} & \textbf{Devs} & \textbf{Ingreso} & \textbf{Costo de Oportunidad} & \textbf{\% Recursos utilizados} \\
+                                       & \textbf{Reservados}              &$[min, mean, max]$ & $[min, mean, max]$          & $[min, mean, max]$ \\
+  \hline
+  \hline
+  \multirow{3}{*}{Estrategia 1} & 0 &  $[124 : 128 : 131]$ & $[73 : 75 : 77]$ & $[19,5 : 20 : 20]$\\
+  \multirow{3}{*}{Precio HH}    & 2 & $[123 : 126 : 129]$ & $[74: 76 : 78]$ & $[19,5 : 20 : 20] $\\
+                                & 4 & $[124 : 127 : 130]$ & $[75 : 76 : 78]$ & $[19,499 : 19,999 : 20]$\\
+                                & 6 & $[124 : 127 : 131]$ & $[75 : 77 : 79]$ & $[19,493 : 19,993 : 20]$\\
+  \hline
+  \multirow{3}{*}{Estrategia 2} & 0 &  $[128 : 131 : 134$ & $[71 : 73 : 75]$ & $[19.5 : 20 : 20]$\\
+  \multirow{3}{*}{Facturación}  & 2 & $[126 : 130 : 133$ & $[70 : 72 : 74]$ & $[19.5 : 20 : 20]$\\
+                                & 4 & $[127 : 130 : 134$ & $[70 : 72 : 74]$ & $[19.498 : 19.998 : 20]$\\
+                                & 6 & $[129 : 132 : 136$ & $[70 : 72 : 74]$ & $[19.5 : 20 : 20]$\\
+  \hline
+ \end{tabular}
+ \caption{Resultados de la simulación}
+\end{table}
+
 \begin{figure}[H]
 
 \begin{center}
