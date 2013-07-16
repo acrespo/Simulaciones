@@ -1,0 +1,46 @@
+\part*{Modelo Operacional}
+
+\section{Arquitectura}
+
+Para el desarrollo del simulador se utilizará el lenguaje \textit{Python}. Se hará uso de la librería \textit{numpy} para la generación de números aleatorios, \textit{matplotlib}
+para la generación de gráficos y \textit{wxPython} para la GUI.\\
+
+\section{Etapas y Plan de Desarrollo}
+
+\subsection*{Etapa 1 - Modelo de Organización}
+Como primer paso del desarrollo, se hará el modelo de organización y proyectos. Esto es, codificar las reglas de decisión y asignación de recursos. Desde luego que para poder 
+desarrollar estas reglas, se debe codificar los tipos de datos proyeto y organización.\\
+
+\subsection*{Etapa 2 - Motor de Simulación}
+El principal objetivo de esta etapa es poder simular el análisis mensual de la organización. Con la llegada de proyectos, la decisión de toma de proyectos y la asignación de los 
+recursos para el mes de trabajo.\\
+
+\subsection*{Etapa 3 - Modelo de Datos}
+El objetivo de esta etapa es ajustar de forma correcta el valor de todas las variables y parámetros especificados en el modelo de datos. Se deberían implementar los 
+generadores de cada variable y deberían ser verificados.\\
+
+\subsection*{Etapa 4 - Interfaz visual}
+El objetivo de esta etapa es que pueda visualizarse la corrida de la simulación, mostrando las diferentes etapas, procesos y/o resultados intermedios. También se deberían
+poder visualizar las métricas en especial aquellas que son funciones objetivo.\\
+
+
+\section{Plan de experimentación}
+Para probar el simulador se diseñarán diferentes estrategias de aceptación y asignación de recursos, y se variará la cantidad de desarrolladores. 
+Se probarán incluso escenarios de irreales, como la estrategia trivial de aceptar todo proyecto en según su orden de llegada, sólo con el motivo de probar el simulador 
+y verificar que no surgen problemas.\\
+
+
+\section{Plan de pruebas}
+
+\subsection{Verificación}
+
+
+\begin{itemize}
+    \item \textbf{Verificación de generadores aleatorios:} En el simulador se colocaron los histogramas de los valores que se generan durante la simulación. El objetivo 
+        de esto es verificar que en la simulación los histogramas se correspondan con las distribuciones de cada variable.
+    \item \textbf{Verificación de estrategias de aceptación:} Una de las cosas importantes a verificar es que el simulador elija los caminos acorde a la estrategia seleccionada. 
+        Para ello se diseñaron dos pequeños conjuntos de testeo, compuestos por proyectos, generados correctamente según las distribuciones que corresponden, para los cuales, 
+        después de un corto tiempo de simulación se conocen los resultados.
+
+\end{itemize}
+

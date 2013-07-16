@@ -1,0 +1,83 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{t1enc}
+
+\usepackage[utf8]{inputenc}
+\usepackage{t1enc}
+\usepackage[spanish]{babel}
+\usepackage[pdftex,usenames,dvipsnames]{color}
+\usepackage[pdftex]{graphicx}
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[table]{xcolor}
+\usepackage[small,bf]{caption}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{listings}
+\usepackage{bm}
+\usepackage{times}
+\usepackage{verbatim}
+\usepackage{moreverb}
+\usepackage{fancyvrb}
+% \usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{mdwlist}
+\usepackage{url}
+\usepackage{listings}
+\lstset{breaklines=true}
+\lstset{numbers=left, numberstyle=\scriptsize\ttfamily, numbersep=10pt, captionpos=b} 
+\lstset{basicstyle=\small\ttfamily}
+\lstset{framesep=4pt}
+
+\begin{document}
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+
+\begin{titlepage}
+        \vfill
+        \thispagestyle{empty}
+        \begin{center}
+                \includegraphics{./images/itba_logo.png}
+                \vfill
+                \Huge{Simulación de Sistemas}\\
+                \vspace{1cm}
+                \Huge{Trabajo Pr\'actico Especial}\\
+                \vspace{1cm}
+                \Huge{Estrategia comercial de una software factory}\\
+                \vspace{1cm}
+                Grupo 3
+        \end{center}
+        \vfill
+        \large{
+        \begin{tabular}{lcr}
+                Civile, Juan Pablo && 50453\\
+                Crespo, Alvaro && 50758 \\
+                Marseillan, Agustín && 50134\\
+        \end{tabular}
+}
+        \vspace{2cm}
+        \begin{center}
+                \large{17 de Junio de 2013}\\
+        \end{center}
+\end{titlepage}
+\newpage
+
+\setcounter{page}{1}
+
+\setcounter{section}{0}
+\include{conceptual}
+
+\setcounter{section}{0}
+\include{datos}
+
+\setcounter{section}{0}
+\include{operacional}
+
+\setcounter{section}{0}
+\include{conclusiones}
+
+\end{document}
